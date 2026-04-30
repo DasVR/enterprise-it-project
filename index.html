@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="The internet isn't magic. It's infrastructure — boxes, cables, and people staying calm during outages. A walk from one laptop to a hyperscale data center.">
+<title>How the World Stays Connected — Enterprise IT Infrastructure</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   APPLE DESIGN TOKENS — sourced from APPLE-DESIGN.md
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --primary: #0066cc;
+  --primary-focus: #0071e3;
+  --primary-on-dark: #2997ff;
+
+  --ink: #1d1d1f;
+  --ink-muted-80: #333333;
+  --ink-muted-48: #7a7a7a;
+  --body-on-dark: #ffffff;
+  --body-muted: #cccccc;
+
+  --canvas: #ffffff;
+  --parchment: #f5f5f7;
+  --pearl: #fafafc;
+  --tile-1: #272729;
+  --tile-2: #2a2a2c;
+  --tile-3: #252527;
+  --black: #000000;
+  --chip: #d2d2d7;
+
+  --hairline: #e0e0e0;
+  --divider-soft: #f0f0f0;
+
+  --easing: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --product-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  font-family: var(--font-text);
+  color: var(--ink);
+  background: var(--canvas);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, svg, iframe { display: block; max-width: 100%; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; }
+
+/* Skip link — visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 16px;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.224px;
+  z-index: 1000;
+  transition: top 200ms var(--easing);
+}
+.skip-link:focus {
+  top: 16px;
+  text-decoration: none;
+  outline: 2px solid var(--primary-focus);
+  outline-offset: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TYPOGRAPHY — token-exact (APPLE-DESIGN.md)
+   ───────────────────────────────────────────────────────────── */
+.hero-display {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+}
+@media (max-width: 1068px) { .hero-display { font-size: 48px; line-height: 1.08; } }
+@media (max-width: 833px)  { .hero-display { font-size: 40px; line-height: 1.1;  } }
+@media (max-width: 640px)  { .hero-display { font-size: 34px; line-height: 1.12; } }
+@media (max-width: 419px)  { .hero-display { font-size: 28px; line-height: 1.14; } }
+
+.display-lg {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+@media (max-width: 833px) { .display-lg { font-size: 32px; line-height: 1.12; } }
+@media (max-width: 640px) { .display-lg { font-size: 28px; line-height: 1.14; } }
+
+.display-md {
+  font-family: var(--font-text);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.374px;
+}
+@media (max-width: 640px) { .display-md { font-size: 24px; line-height: 1.25; } }
+
+/* Lead-airy variant — 24px / 300 / 1.5 — DESIGN.md token */
+.lead {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--ink-muted-80);
+  max-width: 720px;
+}
+@media (max-width: 833px) { .lead { font-size: 21px; line-height: 1.47; } }
+@media (max-width: 419px) { .lead { font-size: 19px; line-height: 1.45; } }
+.dark .lead, .dark-2 .lead, .dark-3 .lead { color: var(--body-muted); }
+
+/* Eyebrow — caption-strong token: 14 / 600 / 1.29 / -0.224px (uppercased) */
+.eyebrow {
+  font-family: var(--font-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.dark .eyebrow, .dark-2 .eyebrow, .dark-3 .eyebrow { color: var(--primary-on-dark); }
+
+/* Body — 17px / 400 / 1.47 / -0.374px — the canonical Apple body */
+.body-text { font-size: 17px; font-weight: 400; line-height: 1.47; color: var(--ink-muted-80); letter-spacing: -0.374px; }
+.body-text.on-dark { color: var(--body-muted); }
+.caption { font-size: 14px; font-weight: 400; line-height: 1.43; color: var(--ink-muted-48); letter-spacing: -0.224px; }
+
+/* ─────────────────────────────────────────────────────────────
+   LAYOUT
+   ───────────────────────────────────────────────────────────── */
+.section {
+  /* {spacing.section} 80px — desktop rhythm, tightened on mobile per DESIGN.md */
+  padding: 80px 32px;
+  position: relative;
+}
+@media (max-width: 833px) { .section { padding: 64px 24px; } }
+@media (max-width: 640px) { .section { padding: 48px 20px; } }
+.section.parchment { background: var(--parchment); }
+.section.dark { background: var(--tile-1); color: var(--body-on-dark); }
+.section.dark-2 { background: var(--tile-2); color: var(--body-on-dark); }
+.section.dark-3 { background: var(--tile-3); color: var(--body-on-dark); }
+.section.dark .display-lg, .section.dark-2 .display-lg, .section.dark-3 .display-lg { color: var(--body-on-dark); }
+
+.container { max-width: 1200px; margin: 0 auto; }
+.container.wide { max-width: 1440px; }
+.container.narrow { max-width: 980px; }
+
+hr.hairline { border: 0; height: 1px; background: var(--hairline); margin: 0; }
+
+/* ─────────────────────────────────────────────────────────────
+   BUTTONS — Apple pill grammar
+   ───────────────────────────────────────────────────────────── */
+.btn-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--font-text);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.374px;
+  border: 0;
+  border-radius: 9999px;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: transform 200ms var(--easing), background 200ms var(--easing);
+  text-decoration: none;
+}
+.btn-pill:hover { background: var(--primary-focus); text-decoration: none; }
+.btn-pill:active { transform: scale(0.95); }
+.btn-pill.ghost { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+.btn-pill.on-dark { color: #fff; }
+.btn-pill.on-dark.ghost { color: var(--primary-on-dark); border-color: var(--primary-on-dark); }
+
+/* ─────────────────────────────────────────────────────────────
+   REVEAL ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 800ms var(--easing), transform 800ms var(--easing);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal.d1 { transition-delay: 80ms; }
+.reveal.d2 { transition-delay: 160ms; }
+.reveal.d3 { transition-delay: 240ms; }
+.reveal.d4 { transition-delay: 320ms; }
+.reveal.d5 { transition-delay: 400ms; }
+
+/* ─────────────────────────────────────────────────────────────
+   HERO
+   ───────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 144px 32px 0;
+  position: relative;
+  background: var(--canvas);
+}
+@media (max-width: 833px) { .hero { padding: 112px 24px 0; } }
+@media (max-width: 640px) { .hero { padding: 96px 20px 0; } }
+.hero h1 { max-width: 16ch; }
+.hero .tagline {
+  margin-top: 18px;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: var(--ink-muted-48);
+}
+@media (max-width: 833px) { .hero .tagline { font-size: 21px; } }
+@media (max-width: 419px) { .hero .tagline { font-size: 19px; } }
+.hero .subhead {
+  margin-top: 18px;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink-muted-80);
+}
+@media (max-width: 833px) { .hero .subhead { font-size: 21px; line-height: 1.47; } }
+@media (max-width: 419px) { .hero .subhead { font-size: 19px; line-height: 1.45; } }
+.hero .scroll-indicator {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.12px;
+  color: var(--ink-muted-48);
+}
+.scroll-indicator .line {
+  width: 1px;
+  height: 56px;
+  background: var(--hairline);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   GENERIC GRIDS / CARDS
+   ───────────────────────────────────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+@media (max-width: 1068px) { .two-col { gap: 48px; } }
+@media (max-width: 900px)  { .two-col { grid-template-columns: 1fr; gap: 32px; } }
+
+.fact-list { margin-top: 32px; }
+.fact-item { padding: 24px 0; border-top: 1px solid var(--hairline); }
+.fact-item:last-child { border-bottom: 1px solid var(--hairline); }
+.fact-item h4 {
+  font-family: var(--font-text);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.374px;
+  margin-bottom: 8px;
+}
+.fact-item p {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  color: var(--ink-muted-80);
+}
+.section.dark .fact-item, .section.dark-2 .fact-item, .section.dark-3 .fact-item { border-color: rgba(255,255,255,0.10); }
+.section.dark .fact-item p, .section.dark-2 .fact-item p, .section.dark-3 .fact-item p { color: var(--body-muted); }
+.fact-item code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--parchment);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--ink);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SVG DIAGRAMS
+   ───────────────────────────────────────────────────────────── */
+.diagram-wrap {
+  position: relative;
+  width: 100%;
+  margin-top: 16px;
+}
+.diagram-wrap svg { width: 100%; height: auto; max-height: 540px; }
+
+.node {
+  cursor: pointer;
+}
+
+/* Flow lines: draw-once on reveal, then static. No persistent motion. */
+.flow-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  transition: stroke-dashoffset 1600ms var(--easing);
+}
+.reveal.in .flow-line { stroke-dashoffset: 0; }
+.flow-line.dim { opacity: 0.4; }
+.section.dark .flow-line,
+.section.dark-2 .flow-line,
+.section.dark-3 .flow-line { stroke: var(--primary-on-dark); }
+
+/* Tooltip — hairline border, no decorative shadow (DESIGN.md: shadows are reserved for product imagery) */
+.tooltip {
+  position: fixed;
+  z-index: 300;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.224px;
+  max-width: 280px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms var(--easing), transform 200ms var(--easing);
+}
+.tooltip:not(.pinned) { pointer-events: none; }
+.tooltip.show { opacity: 1; transform: none; }
+.tooltip .pin-close {
+  display: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+.tooltip.pinned { padding-right: 36px; }
+.tooltip.pinned .pin-close { display: inline-flex; align-items: center; justify-content: center; }
+.tooltip strong {
+  display: block;
+  color: var(--primary-on-dark);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SKETCHFAB EMBED + APPLE CALLOUTS
+   ───────────────────────────────────────────────────────────── */
+.model-stage {
+  position: relative;
+  margin-top: 56px;
+  background: var(--black);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.model-stage.full-bleed {
+  border-radius: 0;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+}
+.model-stage iframe {
+  width: 100%;
+  border: 0;
+  display: block;
+  background: var(--black);
+}
+.model-stage[data-h="600"] iframe { height: 600px; }
+.model-stage[data-h="700"] iframe { height: 700px; }
+@media (max-width: 720px) {
+  .model-stage[data-h="600"] iframe { height: 420px; }
+  .model-stage[data-h="700"] iframe { height: 480px; }
+}
+
+/* Apple-style callout labels — frosted glass, thin connector line */
+.callout {
+  position: absolute;
+  background: rgba(20, 20, 22, 0.62);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-text);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  cursor: pointer;
+  transition: background 250ms var(--easing), border-color 250ms var(--easing);
+  white-space: nowrap;
+  z-index: 5;
+  user-select: none;
+}
+.callout:hover {
+  background: rgba(0, 102, 204, 0.85);
+  border-color: rgba(255,255,255,0.35);
+}
+.callout:active { transform: scale(0.95); }
+
+/* Connector line + dot — directional variants */
+.callout::before {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+.callout::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary-on-dark);
+  outline: 3px solid rgba(41, 151, 255, 0.20);
+  pointer-events: none;
+}
+.callout.left::before  { right: 100%; top: 50%; width: 80px; height: 1px; transform: translateY(-50%); }
+.callout.left::after   { right: calc(100% + 80px); top: 50%; transform: translate(50%, -50%); }
+.callout.right::before { left: 100%; top: 50%; width: 80px; height: 1px; transform: translateY(-50%); }
+.callout.right::after  { left: calc(100% + 80px); top: 50%; transform: translate(-50%, -50%); }
+.callout.up::before    { left: 50%; bottom: 100%; width: 1px; height: 56px; transform: translateX(-50%); }
+.callout.up::after     { left: 50%; bottom: calc(100% + 56px); transform: translate(-50%, 50%); }
+.callout.down::before  { left: 50%; top: 100%; width: 1px; height: 56px; transform: translateX(-50%); }
+.callout.down::after   { left: 50%; top: calc(100% + 56px); transform: translate(-50%, -50%); }
+
+@media (max-width: 720px) {
+  .callout { display: none; }
+}
+
+/* Mobile callouts — show as a chip list below the embed on small screens */
+.mobile-callouts {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.mobile-callouts button {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 9999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  cursor: pointer;
+}
+.section:not(.dark):not(.dark-2):not(.dark-3) .mobile-callouts button {
+  background: var(--parchment);
+  color: var(--ink);
+  border-color: var(--hairline);
+}
+@media (max-width: 720px) {
+  .mobile-callouts { display: flex; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SLIDE-IN INFO CARD
+   ───────────────────────────────────────────────────────────── */
+.info-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms var(--easing);
+  z-index: 200;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.info-scrim.show { opacity: 1; pointer-events: auto; }
+
+.info-card {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(460px, 100%);
+  height: 100vh;
+  background: #fff;
+  border-left: 1px solid var(--hairline);
+  transform: translateX(100%);
+  transition: transform 520ms var(--easing);
+  padding: 88px 44px 48px;
+  overflow-y: auto;
+  z-index: 201;
+}
+.info-card.show { transform: none; }
+.info-card .close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--parchment);
+  border: 0;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: transform 200ms var(--easing), background 200ms var(--easing);
+}
+.info-card .close:hover { background: var(--hairline); }
+.info-card .close:active { transform: scale(0.92); }
+.info-card .eyebrow { color: var(--primary); margin-bottom: 14px; display: block; }
+.info-card h3 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 16px;
+}
+.info-card .lead-card {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.231px;
+  color: var(--ink-muted-80);
+  margin-bottom: 24px;
+}
+.info-card p { color: var(--ink-muted-80); font-size: 17px; line-height: 1.47; margin-bottom: 14px; letter-spacing: -0.374px; }
+.info-card .spec {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink-muted-48);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   STEP INSIDE OVERLAY (data center)
+   ───────────────────────────────────────────────────────────── */
+.step-inside-headline {
+  position: absolute;
+  top: 48px;
+  left: 48px;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+  pointer-events: none;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.5), 0 0 80px rgba(0,0,0,0.3);
+  z-index: 4;
+}
+@media (max-width: 833px) { .step-inside-headline { top: 32px; left: 24px; font-size: 40px; line-height: 1.1; } }
+@media (max-width: 640px) { .step-inside-headline { font-size: 32px; line-height: 1.12; } }
+.step-inside-headline .kicker {
+  display: block;
+  font-family: var(--font-text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.78;
+  margin-bottom: 14px;
+  color: var(--primary-on-dark);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   STAT CALLOUTS (data center, hero stats etc.)
+   ───────────────────────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 64px;
+}
+.stat-card { border-top: 1px solid var(--hairline); padding-top: 24px; }
+.stat-card .num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--primary);
+}
+@media (max-width: 833px) { .stat-card .num { font-size: 32px; line-height: 1.12; } }
+.stat-card .lbl { margin-top: 12px; font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--ink-muted-80); }
+.section.dark .stat-card, .section.dark-2 .stat-card, .section.dark-3 .stat-card { border-top-color: rgba(255,255,255,0.14); }
+.section.dark .stat-card .num, .section.dark-2 .stat-card .num, .section.dark-3 .stat-card .num { color: var(--primary-on-dark); }
+.section.dark .stat-card .lbl, .section.dark-2 .stat-card .lbl, .section.dark-3 .stat-card .lbl { color: var(--body-muted); }
+@media (max-width: 760px) { .stats-row { grid-template-columns: 1fr; gap: 18px; } }
+
+/* ─────────────────────────────────────────────────────────────
+   CLOUD COMPARISON
+   ───────────────────────────────────────────────────────────── */
+.cloud-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+}
+@media (max-width: 900px) { .cloud-grid { grid-template-columns: 1fr; } }
+
+.cloud-col {
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 32px;
+  cursor: pointer;
+  transition: transform 400ms var(--easing), border-color 400ms var(--easing), background 400ms var(--easing), opacity 400ms var(--easing);
+  position: relative;
+}
+.cloud-col h3 { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.14; letter-spacing: 0.196px; }
+.cloud-col .tag { font-size: 12px; color: var(--ink-muted-48); text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-bottom: 10px; font-weight: 400; }
+.cloud-col p.summary { margin-top: 8px; color: var(--ink-muted-80); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; }
+.cloud-col ul { list-style: none; padding: 0; margin: 20px 0 0; }
+.cloud-col li { padding: 12px 0; border-top: 1px solid var(--divider-soft); font-size: 14px; line-height: 1.43; letter-spacing: -0.224px; color: var(--ink-muted-80); }
+.cloud-col li:first-child { border-top: 0; padding-top: 0; }
+.cloud-grid.has-active .cloud-col:not(.active) { opacity: 0.45; transform: scale(0.97); }
+.cloud-col.active { border-color: var(--primary); background: var(--pearl); }
+
+/* Cost callout */
+.cost-callout {
+  margin-top: 56px;
+  padding: 48px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 18px;
+  text-align: center;
+}
+.cost-callout .num {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+  color: #fff;
+}
+@media (max-width: 833px) { .cost-callout .num { font-size: 40px; line-height: 1.1; } }
+@media (max-width: 640px) { .cost-callout .num { font-size: 32px; line-height: 1.12; } }
+.cost-callout .num .arrow { color: var(--primary-on-dark); margin: 0 16px; font-weight: 300; }
+.cost-callout .lbl { margin-top: 16px; color: var(--body-muted); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; max-width: 640px; margin-left: auto; margin-right: auto; }
+
+/* Multi-cloud diagram */
+.multicloud-diagram { margin-top: 56px; }
+.multicloud-diagram svg { width: 100%; height: auto; max-height: 360px; }
+
+/* ─────────────────────────────────────────────────────────────
+   PINCH A PENNY CASE STUDY
+   ───────────────────────────────────────────────────────────── */
+.section.case { background: var(--parchment); }
+.case-feature { margin-top: 56px; }
+.pq-quote-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  padding: 64px 0;
+  border-top: 1px solid var(--hairline);
+}
+@media (max-width: 1068px) { .pq-quote-block { gap: 48px; padding: 48px 0; } }
+.pq-quote-block:last-child { border-bottom: 1px solid var(--hairline); }
+@media (max-width: 800px) { .pq-quote-block { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; } }
+.pq-quote {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+@media (max-width: 833px) { .pq-quote { font-size: 32px; line-height: 1.12; } }
+@media (max-width: 640px) { .pq-quote { font-size: 28px; line-height: 1.14; } }
+.pq-quote::before { content: '“'; color: var(--primary); margin-right: 4px; }
+.pq-quote::after { content: '”'; color: var(--primary); }
+.pq-body { font-size: 17px; line-height: 1.47; color: var(--ink-muted-80); letter-spacing: -0.374px; }
+
+/* ─────────────────────────────────────────────────────────────
+   COST COUNTERS / CAPEX-OPEX / LICENSING
+   ───────────────────────────────────────────────────────────── */
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+@media (max-width: 1024px) { .counter-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .counter-grid { grid-template-columns: 1fr; } }
+
+.counter { border-top: 1px solid rgba(255,255,255,0.14); padding-top: 22px; }
+.counter .num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+@media (max-width: 833px) { .counter .num { font-size: 40px; line-height: 1.1; } }
+@media (max-width: 640px) { .counter .num { font-size: 32px; line-height: 1.12; } }
+.counter .num .pre,
+.counter .num .post {
+  font-size: 0.5em;
+  color: var(--primary-on-dark);
+  font-weight: 600;
+}
+.counter .lbl { margin-top: 14px; font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--body-muted); }
+
+.capex-opex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 80px;
+}
+@media (max-width: 800px) { .capex-opex { grid-template-columns: 1fr; } }
+.ce-card {
+  background: var(--tile-2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 36px;
+}
+.ce-card .label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--primary-on-dark); margin-bottom: 14px; font-weight: 600; }
+.ce-card h4 { font-family: var(--font-display); font-size: 24px; font-weight: 600; line-height: 1.5; letter-spacing: 0; color: #fff; }
+.ce-card p { margin-top: 12px; color: var(--body-muted); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; }
+.ce-card ul { margin-top: 18px; padding-left: 0; list-style: none; }
+.ce-card li { padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.08); font-size: 14px; line-height: 1.43; letter-spacing: -0.224px; color: var(--body-muted); }
+.ce-card li:first-child { border-top: 0; }
+
+.licensing-callout {
+  margin-top: 56px;
+  padding: 36px;
+  border-radius: 18px;
+  background: var(--tile-3);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (max-width: 760px) { .licensing-callout { grid-template-columns: 1fr; gap: 16px; } }
+.licensing-callout .badge {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--primary-on-dark);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.licensing-callout h4 { font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: 1.19; letter-spacing: 0.231px; color: #fff; margin-bottom: 8px; }
+.licensing-callout p { color: var(--body-muted); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; }
+
+/* ─────────────────────────────────────────────────────────────
+   SOURCES & REFERENCES
+   ───────────────────────────────────────────────────────────── */
+.sources-list {
+  list-style: none;
+  margin-top: 48px;
+  padding: 0;
+  counter-reset: src;
+}
+.sources-list li {
+  counter-increment: src;
+  position: relative;
+  padding: 20px 0 20px 48px;
+  border-top: 1px solid var(--hairline);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  color: var(--ink-muted-80);
+}
+.sources-list li:last-child { border-bottom: 1px solid var(--hairline); }
+.sources-list li::before {
+  content: counter(src, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 22px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.224px;
+  color: var(--primary);
+  font-feature-settings: "tnum";
+}
+.sources-list li strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.24;
+  letter-spacing: -0.374px;
+  margin-bottom: 4px;
+}
+.sources-list li a {
+  color: var(--primary);
+  word-break: break-word;
+  font-size: 14px;
+  letter-spacing: -0.224px;
+  display: inline-block;
+  margin-top: 4px;
+}
+@media (max-width: 640px) {
+  .sources-list li { padding-left: 36px; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER
+   ───────────────────────────────────────────────────────────── */
+footer {
+  background: var(--parchment);
+  padding: 64px 32px;
+  text-align: center;
+  border-top: 1px solid var(--hairline);
+}
+@media (max-width: 833px) { footer { padding: 48px 24px; } }
+footer p {
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-muted-48);
+  line-height: 1.6;
+  letter-spacing: -0.12px;
+}
+footer p.title {
+  font-size: 14px;
+  color: var(--ink-muted-80);
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  margin-bottom: 8px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .flow-line { stroke-dashoffset: 0 !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="#device" class="skip-link">Skip to content</a>
+
+<main id="main">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — HERO
+═════════════════════════════════════════════════════════════ -->
+<section class="hero" aria-labelledby="heroTitle">
+  <h1 id="heroTitle" class="hero-display reveal d1">How the World<br>Stays Connected.</h1>
+  <p class="tagline reveal d2">The internet isn't magic. It's infrastructure.</p>
+  <p class="subhead reveal d3">I used to think the internet was magic. Then I learned it's boxes, cables, and people pretending they're calm during outages.</p>
+  <div class="scroll-indicator reveal d5">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+<hr class="hairline">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — THE SINGLE DEVICE
+═════════════════════════════════════════════════════════════ -->
+<section class="section" id="device">
+  <div class="container">
+    <p class="eyebrow reveal">Chapter 01</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">The Single Device.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Pick any computer. It's not "on the internet" yet — it's just metal until it has three IDs worth memorizing.</p>
+
+    <div class="two-col" style="margin-top:64px">
+      <div class="reveal d2">
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" aria-label="Single device diagram showing laptop, NIC, and IP address">
+            <!-- Laptop body -->
+            <g class="node" data-tip-title="Endpoint Device" data-tip="Laptop, desktop, server, phone — anything that needs an address on the network. The starting point for every connection.">
+              <rect x="60" y="50" width="220" height="140" rx="10" fill="#f5f5f7" stroke="#e0e0e0" stroke-width="1"/>
+              <rect x="74" y="64" width="192" height="112" rx="4" fill="#1d1d1f"/>
+              <rect x="160" y="190" width="20" height="16" fill="#e0e0e0"/>
+              <rect x="120" y="206" width="100" height="6" rx="3" fill="#d2d2d7"/>
+              <text x="170" y="138" font-family="SF Pro Display, Inter, sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" text-anchor="middle" letter-spacing="0.1em">DEVICE</text>
+            </g>
+
+            <!-- Connection line: laptop → NIC port -->
+            <path class="flow-line" d="M280 120 L340 120"/>
+
+            <!-- NIC port -->
+            <g class="node" data-tip-title="NIC — Network Interface Card" data-tip="The physical hardware that bridges the device to the network. Modern enterprise NICs run at 1, 10, 25, 40, or 100 Gbps — converting digital data into electrical or optical signals.">
+              <rect x="340" y="100" width="80" height="40" rx="6" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+              <text x="380" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#0066cc" text-anchor="middle" font-weight="600">NIC</text>
+            </g>
+
+            <!-- MAC label -->
+            <g class="node" data-tip-title="MAC Address — Layer 2" data-tip="A 48-bit hardware identifier burned into the NIC at manufacture (e.g. A4:B1:C2:D3:E4:F5). Globally unique. Used to deliver frames within the local network segment.">
+              <rect x="340" y="20" width="120" height="32" rx="6" fill="#272729"/>
+              <text x="400" y="34" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">MAC ADDRESS</text>
+              <text x="400" y="46" font-family="SF Mono, monospace" font-size="11" fill="#fff" text-anchor="middle">A4:B1:C2:D3:E4:F5</text>
+              <line x1="400" y1="52" x2="400" y2="100" stroke="#7a7a7a" stroke-width="1" stroke-dasharray="3,3"/>
+            </g>
+
+            <!-- IP label -->
+            <g class="node" data-tip-title="IP Address — Layer 3" data-tip="A logical address assigned by DHCP or set statically. IPv4 uses 32-bit notation (192.168.1.42); IPv6 uses 128-bit hex. This is what routes traffic across networks and the internet.">
+              <rect x="340" y="190" width="120" height="32" rx="6" fill="#0066cc"/>
+              <text x="400" y="204" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="0.1em">IP ADDRESS</text>
+              <text x="400" y="216" font-family="SF Mono, monospace" font-size="11" fill="#fff" text-anchor="middle">192.168.1.42</text>
+              <line x1="400" y1="190" x2="400" y2="140" stroke="#7a7a7a" stroke-width="1" stroke-dasharray="3,3"/>
+            </g>
+
+            <!-- OSI Layer indicator -->
+            <g transform="translate(0, 260)">
+              <text x="60" y="0" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" font-weight="600" letter-spacing="0.12em">OSI MODEL — WHERE EACH ID LIVES</text>
+              <rect x="60" y="14" width="120" height="28" rx="6" fill="#f5f5f7" stroke="#e0e0e0"/>
+              <text x="120" y="32" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#1d1d1f" text-anchor="middle">L1 · Physical (NIC)</text>
+              <rect x="190" y="14" width="120" height="28" rx="6" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+              <text x="250" y="32" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#0066cc" text-anchor="middle">L2 · Data Link (MAC)</text>
+              <rect x="320" y="14" width="120" height="28" rx="6" fill="#0066cc"/>
+              <text x="380" y="32" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#fff" text-anchor="middle">L3 · Network (IP)</text>
+            </g>
+          </svg>
+        </div>
+        <p class="caption reveal d3" style="margin-top:12px">Hover any node for details.</p>
+      </div>
+
+      <div class="reveal d3">
+        <div class="fact-list">
+          <div class="fact-item">
+            <h4>NIC — Network Interface Card</h4>
+            <p>The physical hardware that connects a device to a network. Enterprise NICs support 1–100 Gbps and handle the conversion between digital data and the electrical or optical signals that travel down the wire.</p>
+          </div>
+          <div class="fact-item">
+            <h4>MAC Address — Layer 2 Identity</h4>
+            <p>A 48-bit hardware identifier burned into the NIC at manufacture, written as six pairs of hex (<code>A4:B1:C2:D3:E4:F5</code>). Globally unique. Used to deliver frames within the local segment.</p>
+          </div>
+          <div class="fact-item">
+            <h4>IP Address — Layer 3 Identity</h4>
+            <p>A logical address assigned by a DHCP server or set statically. IPv4 uses 32-bit notation (<code>192.168.1.42</code>); IPv6 uses 128-bit hex. This is the address that routes traffic across networks and the public internet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — THE LOCAL NETWORK (LAN)
+═════════════════════════════════════════════════════════════ -->
+<section class="section parchment" id="lan">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 02</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">The Local Network.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">How does a printer in the breakroom find a laptop two floors up? Switches keep a list. Routers keep a map. The whole thing finishes in microseconds and nobody thinks about it.</p>
+
+    <div class="diagram-wrap reveal d3" style="margin-top:64px">
+      <svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg" aria-label="Local area network diagram">
+        <!-- Subtle grid -->
+        <defs>
+          <pattern id="lanGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M40 0 L0 0 0 40" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="1100" height="420" fill="url(#lanGrid)"/>
+
+        <!-- Endpoints (top row) -->
+        <g class="node" data-tip-title="Workstation" data-tip="A user's PC, Mac, or laptop. Each has its own MAC and IP. Plugs into a wall jack or connects via Wi-Fi to an access point.">
+          <rect x="60" y="40" width="100" height="68" rx="10" fill="#fff" stroke="#e0e0e0"/>
+          <rect x="72" y="52" width="76" height="44" rx="3" fill="#1d1d1f"/>
+          <text x="110" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Workstation</text>
+        </g>
+        <g class="node" data-tip-title="VoIP Phone" data-tip="Powered over Ethernet (PoE). Speaks SIP. Often shares the wall jack with a workstation that daisy-chains through it.">
+          <rect x="220" y="40" width="100" height="68" rx="10" fill="#fff" stroke="#e0e0e0"/>
+          <rect x="240" y="56" width="60" height="36" rx="4" fill="#272729"/>
+          <circle cx="270" cy="74" r="4" fill="#0066cc"/>
+          <text x="270" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">VoIP Phone</text>
+        </g>
+        <g class="node" data-tip-title="Wireless Access Point" data-tip="Bridges Wi-Fi clients onto the wired LAN. Enterprise APs broadcast multiple SSIDs, each tagged onto its own VLAN.">
+          <rect x="380" y="40" width="100" height="68" rx="10" fill="#fff" stroke="#e0e0e0"/>
+          <rect x="410" y="58" width="40" height="32" rx="4" fill="#1d1d1f"/>
+          <circle cx="430" cy="50" r="3" fill="#0066cc"/>
+          <text x="430" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Access Point</text>
+        </g>
+        <g class="node" data-tip-title="Printer / Peripheral" data-tip="Networked printers, scanners, and IoT devices live on the LAN with their own IP — usually segregated to a printer VLAN.">
+          <rect x="540" y="40" width="100" height="68" rx="10" fill="#fff" stroke="#e0e0e0"/>
+          <rect x="554" y="60" width="72" height="32" rx="3" fill="#272729"/>
+          <rect x="560" y="64" width="60" height="6" rx="1" fill="#7a7a7a"/>
+          <text x="590" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Printer</text>
+        </g>
+        <g class="node" data-tip-title="IP Camera" data-tip="Surveillance cameras stream video over the LAN to an NVR. Often on their own isolated VLAN to keep multicast off the main network.">
+          <rect x="700" y="40" width="100" height="68" rx="10" fill="#fff" stroke="#e0e0e0"/>
+          <circle cx="750" cy="74" r="20" fill="#1d1d1f"/>
+          <circle cx="750" cy="74" r="9" fill="#0066cc"/>
+          <text x="750" y="125" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">IP Camera</text>
+        </g>
+
+        <!-- Animated flow lines: endpoints → switch -->
+        <path class="flow-line" d="M110 108 L110 170 L520 170 L520 220"/>
+        <path class="flow-line" d="M270 108 L270 175 L520 175 L520 220"/>
+        <path class="flow-line" d="M430 108 L520 108 L520 220"/>
+        <path class="flow-line" d="M590 108 L590 175 L530 175 L530 220"/>
+        <path class="flow-line" d="M750 108 L750 175 L540 175 L540 220"/>
+
+        <!-- Layer 2 Switch -->
+        <g class="node" data-tip-title="Layer 2 Switch" data-tip="Forwards frames using a MAC address table it builds by listening. Operates in microseconds. Enterprise switches support VLANs, Spanning Tree, and link aggregation (LACP).">
+          <rect x="380" y="220" width="280" height="56" rx="10" fill="#1d1d1f"/>
+          <text x="520" y="245" font-family="SF Pro Display, Inter, sans-serif" font-size="14" fill="#fff" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Layer 2 Switch</text>
+          <text x="520" y="262" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">48 PORTS · MAC TABLE</text>
+        </g>
+
+        <!-- Switch → Router -->
+        <path class="flow-line" d="M520 276 L520 320"/>
+
+        <!-- Router -->
+        <g class="node" data-tip-title="Layer 3 Router" data-tip="Routes packets between IP subnets using a routing table. The gateway between the internal LAN and the outside world. Performs NAT, enforces ACLs, and runs OSPF or BGP for path selection.">
+          <rect x="420" y="320" width="200" height="56" rx="10" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="520" y="345" font-family="SF Pro Display, Inter, sans-serif" font-size="14" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Layer 3 Router</text>
+          <text x="520" y="362" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">SUBNETS · NAT · GATEWAY</text>
+        </g>
+
+        <!-- Router → WAN -->
+        <path class="flow-line" d="M620 348 L780 348"/>
+
+        <!-- WAN cloud -->
+        <g class="node" data-tip-title="Internet (WAN)" data-tip="Beyond the router lies the public internet — the global mesh of ISP networks, peering exchanges, and submarine cables that connect this LAN to every other network on Earth.">
+          <ellipse cx="900" cy="348" rx="140" ry="36" fill="#f5f5f7" stroke="#e0e0e0"/>
+          <text x="900" y="354" font-family="SF Pro Display, Inter, sans-serif" font-size="14" fill="#1d1d1f" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Internet (WAN)</text>
+        </g>
+
+        <!-- Subnet labels -->
+        <text x="60" y="200" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" font-weight="600" letter-spacing="0.1em">SUBNET 192.168.1.0/24</text>
+        <text x="700" y="200" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" font-weight="600" letter-spacing="0.1em">CCTV — 10.10.20.0/24</text>
+      </svg>
+    </div>
+
+    <div class="two-col" style="margin-top:48px">
+      <div class="reveal d2">
+        <div class="fact-list" style="margin-top:0">
+          <div class="fact-item">
+            <h4>Layer 2 Switch</h4>
+            <p>Forwards Ethernet frames using a MAC address table. Learns which device sits on which port by listening. Modern enterprise switches push line-rate traffic in microseconds, support VLAN tagging (802.1Q), and aggregate links with LACP for redundancy.</p>
+          </div>
+          <div class="fact-item">
+            <h4>Layer 3 Router</h4>
+            <p>Routes IP packets between subnets using a routing table. Acts as the default gateway for the LAN, performs NAT to share one public address across many private ones, and enforces access control lists at the border.</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal d3">
+        <div class="fact-list" style="margin-top:0">
+          <div class="fact-item">
+            <h4>ARP & DHCP — The Glue</h4>
+            <p>ARP resolves an IP address into a MAC address inside a subnet. DHCP automatically hands out IP addresses, subnet masks, default gateways, and DNS servers when a new device joins. Together, they keep the LAN self-organizing.</p>
+          </div>
+          <div class="fact-item">
+            <h4>Subnets — Logical Boundaries</h4>
+            <p>A subnet is a slice of the IP address space (<code>192.168.1.0/24</code> = 254 hosts). Enterprises slice their LAN into many subnets — by floor, by department, or by device type — so traffic stays contained and policies stay enforceable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — INSIDE THE SERVER (Apple exploded view)
+═════════════════════════════════════════════════════════════ -->
+<section class="section dark" id="server">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 03</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">Inside the Server.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">A server doesn't look like much from the outside — a flat metal box that whirs. Pop the lid, though, and almost every part has a backup ready to take over. Tap a label to see what each one does.</p>
+
+    <div class="model-stage reveal d3" data-h="600">
+      <iframe
+        title="Server exploded view"
+        loading="lazy"
+        src="https://sketchfab.com/models/1a605b3fb42c4c78a06380bfdca0d453/embed?autostart=1&ui_theme=dark&ui_infos=0&ui_controls=0&ui_stop=0"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"></iframe>
+
+      <button type="button" class="callout right" style="top:12%; left:6%"  data-info="cpu" aria-label="CPU details">CPU</button>
+      <button type="button" class="callout right" style="top:32%; left:6%"  data-info="ram" aria-label="RAM details">RAM ×8</button>
+      <button type="button" class="callout right" style="top:54%; left:6%"  data-info="motherboard" aria-label="Motherboard details">Motherboard</button>
+      <button type="button" class="callout right" style="top:78%; left:6%"  data-info="bmc" aria-label="BMC details">BMC</button>
+      <button type="button" class="callout left"  style="top:14%; right:6%" data-info="nic" aria-label="NIC details">NIC</button>
+      <button type="button" class="callout left"  style="top:42%; right:6%" data-info="storage" aria-label="Storage details">Storage</button>
+      <button type="button" class="callout left"  style="top:74%; right:6%" data-info="psu" aria-label="PSU details">PSU ×2</button>
+    </div>
+
+    <div class="mobile-callouts">
+      <button type="button" data-info="cpu">CPU</button>
+      <button type="button" data-info="ram">RAM ×8</button>
+      <button type="button" data-info="nic">NIC</button>
+      <button type="button" data-info="storage">Storage</button>
+      <button type="button" data-info="psu">PSU ×2</button>
+      <button type="button" data-info="motherboard">Motherboard</button>
+      <button type="button" data-info="bmc">BMC</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — THE SERVER RACK
+═════════════════════════════════════════════════════════════ -->
+<section class="section" id="rack">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 04</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">The Server Rack.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Servers don't live alone. They share a 42U steel cabinet with switches, patch panels, and a battery the size of a fridge — and every cable's been planned to the millimeter so the next person can still find anything.</p>
+
+    <div class="model-stage reveal d3" data-h="600">
+      <iframe
+        title="Server rack model"
+        loading="lazy"
+        src="https://sketchfab.com/models/f178ec0a9c5f4605a5acbaaeb52dc721/embed?autostart=1&ui_theme=dark&ui_infos=0&ui_controls=0&ui_stop=0"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"></iframe>
+
+      <button type="button" class="callout right" style="top:14%; left:6%" data-info="rack-1u" aria-label="1U Server Unit details">1U Server Units</button>
+      <button type="button" class="callout right" style="top:42%; left:6%" data-info="patch-panel" aria-label="Patch Panel details">Patch Panel</button>
+      <button type="button" class="callout right" style="top:70%; left:6%" data-info="ups" aria-label="UPS Battery Backup details">UPS Battery Backup</button>
+      <button type="button" class="callout left"  style="top:24%; right:6%" data-info="rack-switch" aria-label="Network Switch details">Network Switch</button>
+      <button type="button" class="callout left"  style="top:62%; right:6%" data-info="cable-mgmt" aria-label="Cable Management details">Cable Management</button>
+    </div>
+
+    <div class="mobile-callouts">
+      <button type="button" data-info="rack-1u">1U Servers</button>
+      <button type="button" data-info="patch-panel">Patch Panel</button>
+      <button type="button" data-info="rack-switch">Network Switch</button>
+      <button type="button" data-info="ups">UPS</button>
+      <button type="button" data-info="cable-mgmt">Cable Management</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6 — THE DATA CENTER (Walk-through)
+═════════════════════════════════════════════════════════════ -->
+<section class="section dark-3" id="datacenter">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 05</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">The Data Center.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">A data center spends almost half its electricity bill on staying cold. That's the surprising part — the racks aren't the expensive thing. Keeping the racks from melting is.</p>
+  </div>
+
+  <div class="model-stage full-bleed reveal d3" data-h="700" style="margin-top:64px">
+    <h3 class="step-inside-headline">
+      <span class="kicker">Walk Through</span>
+      Step Inside.
+    </h3>
+    <iframe
+      title="Data center walkthrough"
+      loading="lazy"
+      src="https://sketchfab.com/models/468911f09c3349cc98659067af5daf14/embed?autostart=1&ui_theme=dark&ui_infos=0&ui_controls=0&ui_stop=0"
+      allow="autoplay; fullscreen; xr-spatial-tracking"
+      allowfullscreen
+      mozallowfullscreen="true"
+      webkitallowfullscreen="true"></iframe>
+  </div>
+
+  <div class="container wide" style="margin-top:80px">
+    <div class="two-col">
+      <div class="reveal d2">
+        <h3 class="display-md">What keeps it running.</h3>
+        <p class="body-text on-dark" style="margin-top:16px">Three invisible systems are working at all times — cooling, power, and security. Together they make the difference between five-nines uptime and a seven-figure outage.</p>
+      </div>
+      <div class="reveal d3">
+        <div class="fact-list" style="margin-top:0">
+          <div class="fact-item">
+            <h4 style="color:#fff">Precision Cooling</h4>
+            <p>Hot-aisle / cold-aisle containment, in-row CRAC units, and (in modern facilities) direct-to-chip liquid loops keep silicon between 65–80 °F under full load. Cooling alone consumes about 40% of the building's power.</p>
+          </div>
+          <div class="fact-item">
+            <h4 style="color:#fff">Redundant Power</h4>
+            <p>Two independent utility feeds, dual UPS strings, and on-site diesel generators with 24+ hours of fuel. Every rack receives A-side and B-side power — losing one circuit doesn't lose the workload.</p>
+          </div>
+          <div class="fact-item">
+            <h4 style="color:#fff">Physical Security & Connectivity</h4>
+            <p>Mantrap entries, badge + biometrics, CCTV, cage locks per tenant, and audited access logs. Network traffic enters and leaves through multiple ISPs over diverse fiber paths so a single backhoe can't sever the building.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card reveal d2">
+        <div class="num">99.999%</div>
+        <div class="lbl">Uptime target — five minutes of downtime per year.</div>
+      </div>
+      <div class="stat-card reveal d3">
+        <div class="num">40%</div>
+        <div class="lbl">Of total facility power spent on cooling alone.</div>
+      </div>
+      <div class="stat-card reveal d4">
+        <div class="num">N+1</div>
+        <div class="lbl">Multiple ISPs, diverse fiber, redundant everything.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7 — ENTERPRISE SYSTEMS
+═════════════════════════════════════════════════════════════ -->
+<section class="section parchment" id="systems">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 06</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">Enterprise Systems.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Hardware is loud. Software is louder. This is where IT stops feeling like boxes and starts feeling like rules. Active Directory decides who you are. SQL Server remembers what you did. The firewall decides what gets in.</p>
+
+    <div class="diagram-wrap reveal d3" style="margin-top:64px">
+      <svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg" aria-label="Enterprise systems diagram">
+        <!-- Internet -->
+        <g class="node" data-tip-title="Internet" data-tip="Untrusted public network. Every byte arriving here must pass the firewall.">
+          <ellipse cx="100" cy="270" rx="68" ry="34" fill="#e0e0e0"/>
+          <text x="100" y="276" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Internet</text>
+        </g>
+
+        <!-- flow internet → firewall -->
+        <path class="flow-line" d="M168 270 L260 270"/>
+
+        <!-- Firewall -->
+        <g class="node" data-tip-title="Firewall" data-tip="Inspects every packet entering or leaving the network. Enforces policy by source, destination, port, and application. Modern next-gen firewalls also do deep packet inspection and IPS.">
+          <rect x="260" y="240" width="140" height="60" rx="10" fill="#1d1d1f"/>
+          <text x="330" y="265" font-family="SF Pro Display, Inter, sans-serif" font-size="14" fill="#fff" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Firewall</text>
+          <text x="330" y="282" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.12em">PERIMETER</text>
+        </g>
+
+        <!-- flow firewall → core switch -->
+        <path class="flow-line" d="M400 270 L490 270"/>
+
+        <!-- Core Switch -->
+        <g class="node" data-tip-title="Core Switch" data-tip="The high-throughput backbone of the network. Tags traffic into VLANs and routes between them. Typically a stacked pair for redundancy.">
+          <rect x="490" y="240" width="170" height="60" rx="10" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="575" y="265" font-family="SF Pro Display, Inter, sans-serif" font-size="14" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Core Switch</text>
+          <text x="575" y="282" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.12em">VLAN TRUNK</text>
+        </g>
+
+        <!-- VLANs branching out -->
+        <path class="flow-line" d="M660 270 L780 90"/>
+        <path class="flow-line" d="M660 270 L780 210"/>
+        <path class="flow-line" d="M660 270 L780 330"/>
+        <path class="flow-line" d="M660 270 L780 450"/>
+
+        <g class="node" data-tip-title="VLAN 10 — IT" data-tip="Trusted administrators only. Access to all management interfaces. Strictest password and MFA policies.">
+          <rect x="780" y="62" width="160" height="56" rx="9" fill="#fff" stroke="#e0e0e0"/>
+          <text x="860" y="84" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600">VLAN 10 · IT</text>
+          <text x="860" y="100" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle">10.10.10.0/24</text>
+        </g>
+        <g class="node" data-tip-title="VLAN 20 — Finance" data-tip="Cardholder data zone. PCI-DSS scoped. No general internet, only specific outbound destinations through the proxy.">
+          <rect x="780" y="182" width="160" height="56" rx="9" fill="#fff" stroke="#e0e0e0"/>
+          <text x="860" y="204" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600">VLAN 20 · Finance</text>
+          <text x="860" y="220" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle">10.10.20.0/24</text>
+        </g>
+        <g class="node" data-tip-title="VLAN 30 — HR" data-tip="Employee records, payroll, PII. Subject to SOX and GDPR controls. Access tightly logged.">
+          <rect x="780" y="302" width="160" height="56" rx="9" fill="#fff" stroke="#e0e0e0"/>
+          <text x="860" y="324" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600">VLAN 30 · HR</text>
+          <text x="860" y="340" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle">10.10.30.0/24</text>
+        </g>
+        <g class="node" data-tip-title="VLAN 99 — Guest" data-tip="Untrusted Wi-Fi for visitors. Internet only — fully isolated from every internal subnet.">
+          <rect x="780" y="422" width="160" height="56" rx="9" fill="#fff" stroke="#e0e0e0"/>
+          <text x="860" y="444" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600">VLAN 99 · Guest</text>
+          <text x="860" y="460" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle">192.168.99.0/24</text>
+        </g>
+
+        <!-- Server farm on right -->
+        <path class="flow-line dim" d="M940 90 L1050 270"/>
+        <path class="flow-line dim" d="M940 210 L1050 270"/>
+        <path class="flow-line dim" d="M940 330 L1050 270"/>
+
+        <g class="node" data-tip-title="Active Directory" data-tip="Microsoft's directory service. Authenticates every user and computer. Group Policy pushes security settings to every machine in the domain.">
+          <rect x="1050" y="60" width="120" height="50" rx="9" fill="#0066cc"/>
+          <text x="1110" y="82" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">AD</text>
+          <text x="1110" y="98" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle" letter-spacing="0.1em">DIRECTORY</text>
+        </g>
+        <g class="node" data-tip-title="SQL Server" data-tip="Relational database engine. Stores transactional data — sales, inventory, payroll. Transaction log enables point-in-time restore.">
+          <rect x="1050" y="130" width="120" height="50" rx="9" fill="#272729"/>
+          <text x="1110" y="152" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">SQL</text>
+          <text x="1110" y="168" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">DATABASE</text>
+        </g>
+        <g class="node" data-tip-title="File Server" data-tip="Shared storage for documents, drawings, and backups. Permissions enforced through AD groups.">
+          <rect x="1050" y="200" width="120" height="50" rx="9" fill="#272729"/>
+          <text x="1110" y="222" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">FILE</text>
+          <text x="1110" y="238" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">STORAGE</text>
+        </g>
+        <g class="node" data-tip-title="Web Server" data-tip="Hosts internal apps, intranet, dashboards. Accessed only from internal VLANs.">
+          <rect x="1050" y="270" width="120" height="50" rx="9" fill="#272729"/>
+          <text x="1110" y="292" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">WEB</text>
+          <text x="1110" y="308" font-family="SF Pro Text, Inter, sans-serif" font-size="9" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.1em">INTRANET</text>
+        </g>
+
+        <text x="1110" y="350" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle" font-weight="600" letter-spacing="0.1em">SERVER FARM</text>
+      </svg>
+    </div>
+
+    <div class="stats-row" style="margin-top:64px">
+      <div class="stat-card reveal d2">
+        <div class="num" style="color:var(--ink)">Active Directory</div>
+        <div class="lbl">Microsoft's directory service. Authenticates and authorizes every user and computer in the domain. Group Policy enforces password rules, software deployment, and lockout policies on every endpoint.</div>
+      </div>
+      <div class="stat-card reveal d3">
+        <div class="num" style="color:var(--ink)">VLANs</div>
+        <div class="lbl">Virtual LANs split one physical switch into many isolated networks. POS terminals, security cameras, and employee laptops can share copper while staying invisible to one another.</div>
+      </div>
+      <div class="stat-card reveal d4">
+        <div class="num" style="color:var(--ink)">Virtualization</div>
+        <div class="lbl">Hypervisors (VMware ESXi, Hyper-V, Proxmox) run dozens of virtual machines on one physical box. Pinch a Penny runs two VMs per store — one for Active Directory, one for SQL transaction logging.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8 — CLOUD & HYBRID INFRASTRUCTURE
+═════════════════════════════════════════════════════════════ -->
+<section class="section" id="cloud">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 07</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">Cloud & Hybrid.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Nobody gets to pick "cloud or not" like it's a personality quiz. Real companies end up hybrid because reality refuses to choose. Production stays on-prem. Backup goes to AWS. Identity lives on the domain controller. Month-end spikes burst into Azure and come back down.</p>
+
+    <div class="cloud-grid reveal d3" id="cloudGrid" role="tablist" aria-label="Infrastructure model comparison">
+      <button type="button" class="cloud-col" data-col="onprem" role="tab" aria-selected="false">
+        <span class="tag">Traditional</span>
+        <h3>On-Premise</h3>
+        <p class="summary">Full control, full responsibility. Hardware lives in your building.</p>
+        <ul>
+          <li>CapEx model — large up-front investment, depreciated over years</li>
+          <li>Hardware owned and maintained in-house</li>
+          <li>Predictable latency, no egress fees</li>
+          <li>Compliance-friendly for sensitive data residency</li>
+          <li>Scaling requires physical procurement (4–12 weeks lead time)</li>
+        </ul>
+      </button>
+      <button type="button" class="cloud-col" data-col="hybrid" role="tab" aria-selected="false">
+        <span class="tag">Most Common</span>
+        <h3>Hybrid</h3>
+        <p class="summary">What most companies actually run. Half on-prem, half cloud, glued together.</p>
+        <ul>
+          <li>Core systems on-prem, bursting to cloud for spikes</li>
+          <li>Azure AD Connect or Okta sync identities both ways</li>
+          <li>Site-to-site VPN, ExpressRoute, or AWS Direct Connect link</li>
+          <li>DR & backup live in cloud — production stays on-prem</li>
+          <li>Best fit for regulated industries (finance, healthcare, retail)</li>
+        </ul>
+      </button>
+      <button type="button" class="cloud-col" data-col="cloud" role="tab" aria-selected="false">
+        <span class="tag">Modern</span>
+        <h3>Cloud-Native</h3>
+        <p class="summary">Elastic, global, OpEx. No hardware, just APIs.</p>
+        <ul>
+          <li>OpEx model — pay-per-second consumption</li>
+          <li>Kubernetes, serverless, managed databases</li>
+          <li>Global CDN and edge locations out of the box</li>
+          <li>Auto-scaling without hardware lead times</li>
+          <li>Vendor lock-in risk and unpredictable egress costs</li>
+        </ul>
+      </button>
+    </div>
+
+    <div class="cost-callout reveal d3">
+      <div class="num">
+        <span style="color:var(--primary-on-dark)">$3.2M</span>
+        <span class="arrow">→</span>
+        <span>$720K</span>
+      </div>
+      <p class="lbl">One mid-size company's annual infrastructure cost dropped <strong style="color:#fff">77%</strong> after migrating from cloud back to on-premises — a real-world repatriation case study from 37signals (Basecamp).</p>
+    </div>
+
+    <!-- Multi-cloud diagram -->
+    <div class="multicloud-diagram reveal d4">
+      <svg viewBox="0 0 1100 320" xmlns="http://www.w3.org/2000/svg" aria-label="Multi-cloud architecture diagram">
+        <!-- Enterprise core -->
+        <g class="node" data-tip-title="Enterprise Core" data-tip="On-prem identity, ERP, and data — the systems too sensitive or too latency-critical to leave the building.">
+          <rect x="450" y="120" width="200" height="80" rx="14" fill="#1d1d1f"/>
+          <text x="550" y="148" font-family="SF Pro Display, Inter, sans-serif" font-size="15" fill="#fff" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">Enterprise Core</text>
+          <text x="550" y="168" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle" letter-spacing="0.12em">ON-PREMISES</text>
+          <text x="550" y="184" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#7a7a7a" text-anchor="middle">AD · ERP · Core SQL</text>
+        </g>
+
+        <!-- AWS -->
+        <path class="flow-line" d="M450 140 L240 80"/>
+        <g class="node" data-tip-title="Amazon Web Services" data-tip="The largest public cloud. EC2 compute, S3 object storage, RDS managed databases, Lambda serverless. Often used for backup, batch processing, and global edge.">
+          <rect x="80" y="40" width="160" height="80" rx="14" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="160" y="72" font-family="SF Pro Display, Inter, sans-serif" font-size="20" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.03em">AWS</text>
+          <text x="160" y="94" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Backup · Batch · Edge</text>
+        </g>
+
+        <!-- Azure -->
+        <path class="flow-line" d="M450 180 L240 240"/>
+        <g class="node" data-tip-title="Microsoft Azure" data-tip="Microsoft's cloud. Tightly integrated with on-prem Windows Server, Active Directory, and Microsoft 365. The default choice for enterprises already on the Microsoft stack.">
+          <rect x="80" y="200" width="160" height="80" rx="14" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="160" y="232" font-family="SF Pro Display, Inter, sans-serif" font-size="20" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.03em">Azure</text>
+          <text x="160" y="254" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">M365 · Identity · Hybrid</text>
+        </g>
+
+        <!-- GCP -->
+        <path class="flow-line" d="M650 140 L860 80"/>
+        <g class="node" data-tip-title="Google Cloud" data-tip="Google's cloud. Strong in data analytics (BigQuery), machine learning (Vertex AI), and Kubernetes (GKE — the original K8s home).">
+          <rect x="860" y="40" width="160" height="80" rx="14" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="940" y="72" font-family="SF Pro Display, Inter, sans-serif" font-size="20" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.03em">GCP</text>
+          <text x="940" y="94" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Analytics · ML · K8s</text>
+        </g>
+
+        <!-- SaaS -->
+        <path class="flow-line" d="M650 180 L860 240"/>
+        <g class="node" data-tip-title="SaaS Platforms" data-tip="Salesforce, ServiceNow, Workday, Microsoft 365 — the productized cloud. The enterprise consumes them via API; the vendor runs the infrastructure.">
+          <rect x="860" y="200" width="160" height="80" rx="14" fill="#fff" stroke="#0066cc" stroke-width="1.5"/>
+          <text x="940" y="232" font-family="SF Pro Display, Inter, sans-serif" font-size="17" fill="#0066cc" text-anchor="middle" font-weight="600" letter-spacing="-0.02em">SaaS</text>
+          <text x="940" y="254" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle">Salesforce · M365</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Network switch model embed for visual texture -->
+    <div class="model-stage reveal d4" data-h="600" style="margin-top:64px">
+      <iframe
+        title="Network switch"
+        loading="lazy"
+        src="https://sketchfab.com/models/974f1aa182fc4bb1b996310e32234448/embed?autostart=1&ui_theme=dark&ui_infos=0&ui_controls=0&ui_stop=0"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 9 — REAL WORLD: PINCH A PENNY
+═════════════════════════════════════════════════════════════ -->
+<section class="section case" id="penny">
+  <div class="container narrow">
+    <p class="eyebrow reveal">Chapter 08 · Case Study</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">Pinch a Penny.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Pinch a Penny is 280+ stores selling fun summer stuff with IT that's stubbornly old-school. That's not failure — that's survival.</p>
+
+    <p class="body-text reveal d3" style="margin-top:24px; max-width:720px;">Walk into any of their stores and you'll see the same setup: one register, one back-office PC, and a closet most people would mistake for a janitor's. That closet runs the store. Here are five things about it that surprised me.</p>
+
+    <div class="case-feature">
+      <div class="pq-quote-block reveal">
+        <div class="pq-quote">No VLANs. Flat network. Every device on the same logical network.</div>
+        <div class="pq-body">First thing that broke my brain: the POS, the security cameras, and the employee laptop are all on the same flat network. Big retailers segment everything by law. Pinch a Penny stores were built before that became standard practice, and untangling 280 of them is a "next quarter" project that's been "next quarter" for a while.</div>
+      </div>
+      <div class="pq-quote-block reveal">
+        <div class="pq-quote">Chlorine gas corrodes metal contacts. DeOxit contact cleaner is the fix.</div>
+        <div class="pq-body">Then there's the chlorine. Pool stores stock chlorine, algaecides, and oxidizers, so the air's faintly corrosive year-round. NIC ports oxidize. Server PSUs die early. The fix is a $9 tube of DeOxit on the shelf next to the staplers — completely unglamorous and completely effective.</div>
+      </div>
+      <div class="pq-quote-block reveal">
+        <div class="pq-quote">All stores run local servers — because the internet goes down. Always.</div>
+        <div class="pq-body">Every store keeps a Windows box humming under the counter running the database locally. A cloud-only POS sounds great until the ISP drops on a Saturday and you've got a line of customers holding chlorine tabs. The internet is treated as a convenience here, not a dependency.</div>
+      </div>
+      <div class="pq-quote-block reveal">
+        <div class="pq-quote">Two VMs per store: one for Active Directory, one for SQL transaction logging.</div>
+        <div class="pq-body">That one Windows box isn't really one machine — it's two virtual machines on a single Hyper-V host. VM #1 handles staff logins and Group Policy. VM #2 runs SQL Server with the day's transaction log. Two roles, two VMs, separate failures. If one wedges, the other keeps the doors open.</div>
+      </div>
+      <div class="pq-quote-block reveal">
+        <div class="pq-quote">Nightly batch backup to central server. No real-time sync.</div>
+        <div class="pq-body">And then at 2 AM, every store ships the day's transactions to corporate. Reporting is always a day behind — on purpose. Live replication across 280 stores would be a debugging nightmare. Batch jobs you can re-run when one fails. They're robust, they're boring, and they're good enough.</div>
+      </div>
+    </div>
+
+    <p class="body-text reveal" style="margin-top:48px; max-width:720px;">If I'm being honest, this build looks dated on paper. No segmentation, no real-time sync, paper-towel-and-DeOxit hardware care. But it stays open during outages, the staff knows how it works, and the bill is small. Pragmatic beats fashionable when the customer is standing at the counter. That's the lesson — the cleanest architecture isn't always the one that wins.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 10 — THE COST OF IT ALL
+═════════════════════════════════════════════════════════════ -->
+<section class="section dark-2" id="cost">
+  <div class="container wide">
+    <p class="eyebrow reveal">Chapter 09</p>
+    <h2 class="display-lg reveal d1" style="margin-top:12px">The Cost of It All.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">Quick — guess what costs more: the rack of servers, or the licenses that let you legally turn them on? It's the licenses. It's almost always the licenses. The hardware is just the part you can see.</p>
+
+    <div class="counter-grid">
+      <div class="counter reveal d2">
+        <div class="num" data-counter='{"end":254,"suffix":"%"}'>0%</div>
+        <div class="lbl">Three-year ROI on a modern on-prem server refresh, according to IDC. That's the kind of number that almost sounds like a typo — except it's an audited finding from real customer interviews.</div>
+      </div>
+      <div class="counter reveal d2">
+        <div class="num" data-counter='{"pre":"$","end":723.4,"decimals":1,"suffix":"B"}'>$0B</div>
+        <div class="lbl">Gartner's worldwide cloud spending forecast for the year. That's bigger than the GDP of every country except about twenty — companies collectively spend a small economy on rented compute.</div>
+      </div>
+      <div class="counter reveal d3">
+        <div class="num" data-counter='{"end":35,"suffix":"%"}'>0%</div>
+        <div class="lbl">The plot twist: enterprises moving steady workloads to modern on-prem are reporting up to a 35% drop in infrastructure cost. On-prem isn't more expensive than cloud anymore — for predictable load, it's cheaper.</div>
+      </div>
+      <div class="counter reveal d4">
+        <div class="num" data-counter='{"pre":"$","end":44.5,"decimals":1,"suffix":"B"}'>$0B</div>
+        <div class="lbl">Flexera says companies waste about $44.5B a year on cloud they're not even using — like leaving every faucet in a stadium dripping because nobody turned the handles off.</div>
+      </div>
+    </div>
+
+    <div class="capex-opex">
+      <div class="ce-card reveal d2">
+        <span class="label">CapEx · Capital Expenditure</span>
+        <h4>You buy it. You own it. You depreciate it.</h4>
+        <p>Money spent up-front to acquire physical assets — servers, switches, UPS, racks, cabling. Lives on the balance sheet, depreciates over 3–5 years.</p>
+        <ul>
+          <li>1U rack server: $8,000 – $40,000 each</li>
+          <li>48-port enterprise switch: $3,000 – $15,000</li>
+          <li>UPS + power infrastructure: $5,000 – $25,000</li>
+          <li>Firewall appliance: $2,000 – $20,000</li>
+          <li>Structured cabling install: $2,000 – $12,000 per closet</li>
+        </ul>
+      </div>
+      <div class="ce-card reveal d3">
+        <span class="label">OpEx · Operational Expenditure</span>
+        <h4>You rent it. Every month. Forever.</h4>
+        <p>Recurring spend — cloud bills, SaaS seats, ISP, salaries, support contracts. Hits the income statement immediately, scales with usage.</p>
+        <ul>
+          <li>Microsoft 365 per seat: $180 – $420 / year</li>
+          <li>Azure or AWS workloads: $500 – $50,000+ / month</li>
+          <li>Senior IT engineer salary: $95,000 – $160,000 / year</li>
+          <li>Managed service contract: $1,000 – $8,000 / month</li>
+          <li>Enterprise ISP + redundant link: $200 – $2,000 / month</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Microsoft licensing callout -->
+    <div class="licensing-callout reveal d3">
+      <div class="badge">8</div>
+      <div>
+        <h4>Microsoft Licensing — The Hidden Tax</h4>
+        <p>Windows Server is licensed per physical core, with an <strong style="color:#fff">8-core minimum per CPU and 16-core minimum per server</strong>. On top of that, every user or device that touches the server needs a CAL (Client Access License). For a 50-employee company with two physical hosts, that's already five figures a year before a single workload runs.</p>
+      </div>
+    </div>
+
+    <!-- Full rack + console embed for visual closure -->
+    <div class="model-stage reveal d3" data-h="600" style="margin-top:64px">
+      <iframe
+        title="Full server rack and console"
+        loading="lazy"
+        src="https://sketchfab.com/models/24ebe6f197c44e0a93f4010045c4a997/embed?autostart=1&ui_theme=dark&ui_infos=0&ui_controls=0&ui_stop=0"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        allowfullscreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 11 — SOURCES & REFERENCES
+═════════════════════════════════════════════════════════════ -->
+<section class="section parchment" id="sources" aria-labelledby="sourcesTitle">
+  <div class="container narrow">
+    <p class="eyebrow reveal">Appendix</p>
+    <h2 id="sourcesTitle" class="display-lg reveal d1" style="margin-top:12px">Sources &amp; References.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">I didn't make any of these numbers up. Here's where each one came from, so you can check my work — or, more likely, fall down the same rabbit holes I did.</p>
+
+    <ol class="sources-list reveal d3">
+      <li>
+        <strong>254% three-year ROI for modernized server infrastructure</strong>
+        IDC Business Value Snapshot — <em>The Business Value of Dell PowerEdge Servers</em>. Composite ROI from interviews with enterprises that refreshed to current-generation rack servers.
+        <a href="https://www.delltechnologies.com/asset/en-us/products/servers/industry-market/idc-business-value-of-dell-poweredge-servers.pdf" target="_blank" rel="noopener">delltechnologies.com — IDC Business Value</a>
+      </li>
+      <li>
+        <strong>$723.4 B global cloud spending forecast</strong>
+        Gartner — <em>Forecast: Public Cloud Services, Worldwide</em>. End-user public-cloud spend, full-year worldwide projection.
+        <a href="https://www.gartner.com/en/newsroom/press-releases/2024-11-19-gartner-forecasts-worldwide-public-cloud-end-user-spending-to-total-723-billion-dollars-in-2025" target="_blank" rel="noopener">gartner.com — public cloud forecast</a>
+      </li>
+      <li>
+        <strong>35% reduction in infrastructure cost on modern on-prem platforms</strong>
+        Forrester Total Economic Impact — <em>The Total Economic Impact of HPE GreenLake / Dell APEX</em>. Range across composite enterprise customers shifting from legacy infrastructure to modern on-prem subscription platforms.
+        <a href="https://www.forrester.com/" target="_blank" rel="noopener">forrester.com — Total Economic Impact studies</a>
+      </li>
+      <li>
+        <strong>$44.5 B wasted annually on under-utilized cloud resources</strong>
+        Flexera — <em>State of the Cloud Report</em>. Estimated waste from idle VMs, over-provisioned instances, orphaned storage, and stale snapshots across surveyed enterprises.
+        <a href="https://info.flexera.com/CM-REPORT-State-of-the-Cloud" target="_blank" rel="noopener">flexera.com — State of the Cloud</a>
+      </li>
+      <li>
+        <strong>$3.2 M → $720 K annual repatriation savings</strong>
+        37signals (David Heinemeier Hansson) — <em>We have left the cloud</em> &amp; follow-up posts. The Basecamp / HEY engineering team's documented annual cloud bill before and after their on-prem repatriation.
+        <a href="https://world.hey.com/dhh/we-have-left-the-cloud-251760fb" target="_blank" rel="noopener">world.hey.com — We have left the cloud</a>
+      </li>
+      <li>
+        <strong>$5,600 / hour average enterprise downtime cost</strong>
+        Gartner — widely cited downtime cost benchmark. Originally published in IT operations research; the figure is regularly quoted by the Uptime Institute and ITIC's annual reliability survey.
+        <a href="https://www.gartner.com/" target="_blank" rel="noopener">gartner.com — IT downtime research</a>
+      </li>
+      <li>
+        <strong>Five-nines uptime = 99.999% / ~5.26 minutes per year of downtime</strong>
+        Uptime Institute — <em>Tier Standard: Topology</em>. The "Tier IV" data-center classification target.
+        <a href="https://uptimeinstitute.com/tiers" target="_blank" rel="noopener">uptimeinstitute.com — Tier Standard</a>
+      </li>
+      <li>
+        <strong>Cooling = ~40% of data-center power; PUE benchmarks</strong>
+        Uptime Institute — <em>Annual Global Data Center Survey</em>. Average non-IT load (cooling, lighting, conversion) on traditional facilities.
+        <a href="https://uptimeinstitute.com/resources/research-and-reports" target="_blank" rel="noopener">uptimeinstitute.com — Global Data Center Survey</a>
+      </li>
+      <li>
+        <strong>Microsoft Windows Server core-licensing rules (8-core min per CPU, 16-core min per server, CALs)</strong>
+        Microsoft — <em>Windows Server 2022 Licensing Datasheet</em>. The current per-core licensing model.
+        <a href="https://www.microsoft.com/en-us/windows-server/pricing" target="_blank" rel="noopener">microsoft.com — Windows Server pricing</a>
+      </li>
+      <li>
+        <strong>Pinch a Penny network architecture &amp; chlorine-corrosion field detail</strong>
+        Primary research — interviews with franchise IT operators (anonymized) and on-site observation conducted as part of this research project (2026).
+        <span class="caption">Primary source — not externally cited.</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═════════════════════════════════════════════════════════════ -->
+<footer role="contentinfo">
+  <p class="title">Enterprise IT Infrastructure</p>
+  <p>A Gifted Research Project by Arriq Al-Raee</p>
+  <p style="margin-top:24px">Built with vanilla HTML, CSS &amp; JavaScript · 3D models via Sketchfab · Type Inter (SF Pro substitute)</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED UI ELEMENTS
+═════════════════════════════════════════════════════════════ -->
+<div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+<div class="info-scrim" id="infoScrim"></div>
+<aside class="info-card" id="infoCard" role="dialog" aria-modal="true" aria-labelledby="infoTitle" aria-hidden="true">
+  <button type="button" class="close" id="infoClose" aria-label="Close info card">×</button>
+  <span class="eyebrow" id="infoEyebrow">Component</span>
+  <h3 id="infoTitle">—</h3>
+  <p class="lead-card" id="infoLead">—</p>
+  <div id="infoBody"></div>
+  <div class="spec" id="infoSpec"></div>
+</aside>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   COMPONENT INFO CARDS — content for sections 4 & 5
+   ───────────────────────────────────────────────────────────── */
+const COMPONENT_INFO = {
+  cpu: {
+    eyebrow: 'Compute', title: 'CPU',
+    lead: 'Executes every instruction. The brain of the box.',
+    body: [
+      'Enterprise servers run multi-core Intel Xeon or AMD EPYC processors — typically 16 to 128 cores per socket, with two sockets per host.',
+      'Unlike a desktop chip, server CPUs are built to hold 100% load 24×7 without flinching. They support ECC memory, virtualization extensions (VT-x, AMD-V), and remote management hooks.'
+    ],
+    spec: 'Typical · 2× EPYC 9004 / 64 cores · 280 W TDP'
+  },
+  ram: {
+    eyebrow: 'Memory', title: 'RAM × 8',
+    lead: 'ECC memory — silently corrects bit-flips before they corrupt your database.',
+    body: [
+      'Enterprise servers use Error-Correcting Code (ECC) DDR5 RAM. Every read is checked against parity bits; single-bit errors are corrected on the fly, multi-bit errors are flagged.',
+      'In a database or VM host, one undetected bit-flip can cascade into hours of corrupted state. ECC is non-negotiable for production workloads.'
+    ],
+    spec: 'Typical · 8× 64 GB RDIMM DDR5-4800 = 512 GB'
+  },
+  nic: {
+    eyebrow: 'Networking', title: 'NIC',
+    lead: 'The server\'s on-ramp to the network — at line rate.',
+    body: [
+      'Enterprise NICs run at 10, 25, 40, or 100 Gbps. They offload TCP, encryption, and (increasingly) entire virtual networks from the CPU.',
+      'Most servers ship with two NIC ports configured as a bonded LACP pair so the failure of one cable, switch port, or top-of-rack switch doesn\'t take the host offline.'
+    ],
+    spec: 'Typical · Mellanox ConnectX-7 · 2× 25 GbE bonded'
+  },
+  storage: {
+    eyebrow: 'Storage', title: 'Storage',
+    lead: 'Hot-swappable drive bays — replace a failed drive without ever powering down.',
+    body: [
+      'Front-loading 2.5″ bays accept enterprise NVMe, SAS, or SATA drives. Bays are hot-swappable: a failed drive is pulled and replaced while the server keeps running.',
+      'Drives are arranged in a RAID set (or, more often today, a software-defined storage pool) so the loss of one or two drives is invisible to the workload.'
+    ],
+    spec: 'Typical · 12× 7.68 TB NVMe in RAID-Z2'
+  },
+  psu: {
+    eyebrow: 'Power', title: 'PSU × 2',
+    lead: 'Redundant power supplies — if one fails, the server keeps running.',
+    body: [
+      'Enterprise servers ship with two power supplies, fed from two separate circuits in the rack (the "A side" and "B side" feeds).',
+      'Either PSU alone can power the entire server. If one fails, blows a fuse, or its rack PDU drops, the second carries the full load with zero interruption to the workload.'
+    ],
+    spec: 'Typical · 2× 1100 W 80 PLUS Platinum, hot-swap'
+  },
+  motherboard: {
+    eyebrow: 'Backplane', title: 'Motherboard',
+    lead: 'The backbone — every component plugs into this.',
+    body: [
+      'A server motherboard is engineered around throughput and density: dual or quad CPU sockets, 16 to 32 RAM slots, multiple PCIe Gen5 lanes, and a dedicated management network.',
+      'It is not consumer hardware. The board itself, with no CPUs or RAM populated, can cost more than an entire desktop PC.'
+    ],
+    spec: 'Typical · 2× SP5 sockets · 24× DDR5 · 12× PCIe 5.0'
+  },
+  bmc: {
+    eyebrow: 'Management', title: 'BMC',
+    lead: 'A tiny computer-inside-the-computer — runs even when the server is "off".',
+    body: [
+      'The Baseboard Management Controller is an independent ARM processor on the motherboard with its own NIC, OS, and IP address.',
+      'Through the BMC, an admin in another country can power-cycle the server, watch its console, mount an ISO, and reinstall the OS — even when the main system is dead. iDRAC (Dell), iLO (HPE), and IPMI are all BMC implementations.'
+    ],
+    spec: 'Typical · iDRAC 9 / iLO 6 — separate dedicated NIC'
+  },
+  /* SECTION 5 — RACK */
+  'rack-1u': {
+    eyebrow: 'Compute', title: '1U Server Units',
+    lead: 'The unit of measure — and the workhorse of the rack.',
+    body: [
+      'A "U" is 1.75 inches (44.45 mm) of vertical rack space. A standard rack is 42U tall, so 42 separate 1U servers can be stacked floor to ceiling.',
+      'Most modern racks mix 1U pizza boxes (web servers, edge nodes), 2U servers (storage, GPU hosts), and the occasional 4U beast for AI workloads.'
+    ],
+    spec: 'Standard · 19″ rack mount · EIA-310-D'
+  },
+  'patch-panel': {
+    eyebrow: 'Cabling', title: 'Patch Panel',
+    lead: 'Where the building\'s structured cabling meets the rack.',
+    body: [
+      'Every Ethernet drop in the building terminates on the back of a patch panel. The front exposes a clean row of RJ-45 ports labeled with the room and jack number.',
+      'From the patch panel, short patch cables jump to the network switch — keeping every long cable run permanent and untouched. Move a desk? Re-patch a single short cable, not a 90-meter run through the ceiling.'
+    ],
+    spec: 'Typical · 24 or 48 port · Cat6A · 1U'
+  },
+  'rack-switch': {
+    eyebrow: 'Networking', title: 'Top-of-Rack Switch',
+    lead: 'The single point of entry for every server in the rack.',
+    body: [
+      'Every server in the rack connects up to one (or two, for redundancy) top-of-rack switches. The switch itself uplinks to the core switch over a high-speed fiber trunk.',
+      'This "leaf-and-spine" pattern means the switch only has to forward inside the rack at full speed — and any server can reach any other server with at most three hops.'
+    ],
+    spec: 'Typical · 48× 25 GbE + 8× 100 GbE uplinks · 1U'
+  },
+  ups: {
+    eyebrow: 'Power', title: 'UPS Battery Backup',
+    lead: 'When the lights go out, the workload keeps running.',
+    body: [
+      'A rack UPS is a battery the size of a small refrigerator. When utility power drops, it takes over within milliseconds — fast enough that not a single server even notices.',
+      'Most UPS units carry the load for 5–15 minutes. That window is enough for the diesel generator outside the building to spin up and assume the load until utility power returns.'
+    ],
+    spec: 'Typical · 6 kVA double-conversion online · 2U'
+  },
+  'cable-mgmt': {
+    eyebrow: 'Order', title: 'Cable Management',
+    lead: 'The difference between a maintainable rack and a future fire.',
+    body: [
+      'Horizontal cable bars, vertical raceways, velcro ties (never zip ties — they trap heat and pinch fiber), and rigorous color coding make a 42U rack maintainable for the next decade.',
+      'Bad cable management blocks airflow, makes hardware swaps a 4-hour ordeal, and turns a small fault into a domino-effect outage. Good cable management is invisible — and that is exactly the point.'
+    ],
+    spec: 'Standard · color-coded fiber + copper · velcro only'
+  }
+};
+
+/* ─────────────────────────────────────────────────────────────
+   INTERSECTION OBSERVER — fade + slide-up reveals
+   ───────────────────────────────────────────────────────────── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+reveals.forEach(el => revealObserver.observe(el));
+
+/* ─────────────────────────────────────────────────────────────
+   TOOLTIP — for any [data-tip-title] element (SVG nodes etc.)
+   Hover on desktop, tap-to-pin on touch.
+   ───────────────────────────────────────────────────────────── */
+const tooltipEl = document.getElementById('tooltip');
+let pinnedEl = null;
+
+function renderTooltip(el, pinned) {
+  const title = el.getAttribute('data-tip-title');
+  const body = el.getAttribute('data-tip');
+  if (!title) return false;
+  let html = '<strong>' + title + '</strong>' + (body || '');
+  if (pinned) html += '<button type="button" class="pin-close" aria-label="Close">×</button>';
+  tooltipEl.innerHTML = html;
+  return true;
+}
+function showTooltip(el, evt) {
+  if (pinnedEl) return;
+  if (!renderTooltip(el, false)) return;
+  tooltipEl.classList.add('show');
+  positionTooltip(evt);
+}
+function positionTooltip(evt) {
+  if (pinnedEl) return;
+  const t = tooltipEl;
+  const x = evt.clientX, y = evt.clientY;
+  const r = t.getBoundingClientRect();
+  let left = x + 18, top = y + 18;
+  if (left + r.width > window.innerWidth - 12) left = x - r.width - 18;
+  if (top + r.height > window.innerHeight - 12) top = y - r.height - 18;
+  if (left < 12) left = 12;
+  if (top < 12) top = 12;
+  t.style.left = left + 'px';
+  t.style.top = top + 'px';
+}
+function positionPinned(el) {
+  const t = tooltipEl;
+  const er = el.getBoundingClientRect();
+  const r = t.getBoundingClientRect();
+  const margin = 12;
+  let left = er.left + (er.width / 2) - (r.width / 2);
+  let top = er.bottom + 12;
+  if (top + r.height > window.innerHeight - margin) top = er.top - r.height - 12;
+  if (top < margin) top = margin;
+  if (left + r.width > window.innerWidth - margin) left = window.innerWidth - r.width - margin;
+  if (left < margin) left = margin;
+  t.style.left = left + 'px';
+  t.style.top = top + 'px';
+}
+function hideTooltip() {
+  if (pinnedEl) return;
+  tooltipEl.classList.remove('show');
+}
+function pinTooltip(el) {
+  if (!renderTooltip(el, true)) return;
+  pinnedEl = el;
+  tooltipEl.classList.add('show', 'pinned');
+  requestAnimationFrame(() => positionPinned(el));
+}
+function unpinTooltip() {
+  pinnedEl = null;
+  tooltipEl.classList.remove('show', 'pinned');
+}
+
+document.querySelectorAll('[data-tip-title]').forEach(el => {
+  el.addEventListener('mouseenter', e => showTooltip(el, e));
+  el.addEventListener('mousemove', e => positionTooltip(e));
+  el.addEventListener('mouseleave', hideTooltip);
+  el.addEventListener('focus', e => {
+    if (pinnedEl) return;
+    const r = el.getBoundingClientRect();
+    showTooltip(el, { clientX: r.left + r.width / 2, clientY: r.top });
+  });
+  el.addEventListener('blur', hideTooltip);
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (pinnedEl === el) { unpinTooltip(); return; }
+    if (pinnedEl) unpinTooltip();
+    pinTooltip(el);
+  });
+});
+
+tooltipEl.addEventListener('click', (e) => {
+  if (e.target.classList.contains('pin-close')) {
+    e.stopPropagation();
+    unpinTooltip();
+  }
+});
+document.addEventListener('click', (e) => {
+  if (!pinnedEl) return;
+  if (tooltipEl.contains(e.target)) return;
+  if (e.target.closest('[data-tip-title]') === pinnedEl) return;
+  unpinTooltip();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pinnedEl) unpinTooltip(); });
+window.addEventListener('resize', () => { if (pinnedEl) positionPinned(pinnedEl); });
+window.addEventListener('scroll', () => { if (pinnedEl) positionPinned(pinnedEl); }, { passive: true });
+
+/* ─────────────────────────────────────────────────────────────
+   SLIDE-IN INFO CARD — sections 4 & 5 callouts
+   ───────────────────────────────────────────────────────────── */
+const infoCard = document.getElementById('infoCard');
+const infoScrim = document.getElementById('infoScrim');
+const infoEyebrow = document.getElementById('infoEyebrow');
+const infoTitle = document.getElementById('infoTitle');
+const infoLead = document.getElementById('infoLead');
+const infoBody = document.getElementById('infoBody');
+const infoSpec = document.getElementById('infoSpec');
+const infoClose = document.getElementById('infoClose');
+
+function openInfo(key) {
+  const data = COMPONENT_INFO[key];
+  if (!data) return;
+  infoEyebrow.textContent = data.eyebrow;
+  infoTitle.textContent = data.title;
+  infoLead.textContent = data.lead;
+  infoBody.innerHTML = (data.body || []).map(p => '<p>' + p + '</p>').join('');
+  infoSpec.textContent = data.spec || '';
+  infoCard.classList.add('show');
+  infoScrim.classList.add('show');
+  infoCard.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => infoClose.focus(), 100);
+}
+function closeInfo() {
+  infoCard.classList.remove('show');
+  infoScrim.classList.remove('show');
+  infoCard.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('[data-info]').forEach(btn => {
+  btn.addEventListener('click', () => openInfo(btn.getAttribute('data-info')));
+});
+infoClose.addEventListener('click', closeInfo);
+infoScrim.addEventListener('click', closeInfo);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInfo(); });
+
+/* ─────────────────────────────────────────────────────────────
+   CLOUD COMPARISON — click to highlight
+   ───────────────────────────────────────────────────────────── */
+const cloudGrid = document.getElementById('cloudGrid');
+if (cloudGrid) {
+  cloudGrid.querySelectorAll('.cloud-col').forEach(col => {
+    col.addEventListener('click', () => {
+      const wasActive = col.classList.contains('active');
+      cloudGrid.querySelectorAll('.cloud-col').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-selected', 'false');
+      });
+      if (wasActive) {
+        cloudGrid.classList.remove('has-active');
+      } else {
+        col.classList.add('active');
+        col.setAttribute('aria-selected', 'true');
+        cloudGrid.classList.add('has-active');
+      }
+    });
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
+   NUMBER COUNTERS — animate from 0 to target on scroll
+   ───────────────────────────────────────────────────────────── */
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+function animateCounter(el) {
+  const cfg = JSON.parse(el.getAttribute('data-counter'));
+  const end = cfg.end;
+  const decimals = cfg.decimals || 0;
+  const pre = cfg.pre || '';
+  const suffix = cfg.suffix || '';
+  const duration = 1800;
+  const start = performance.now();
+  function frame(t) {
+    const p = Math.min(1, (t - start) / duration);
+    const v = end * easeOutCubic(p);
+    const display = v.toFixed(decimals);
+    el.innerHTML =
+      (pre ? '<span class="pre">' + pre + '</span>' : '') +
+      display +
+      (suffix ? '<span class="post">' + suffix + '</span>' : '');
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
+
+/* Flow lines now draw once on .reveal.in via CSS transition — no JS needed. */
+</script>
+
+</body>
+</html>

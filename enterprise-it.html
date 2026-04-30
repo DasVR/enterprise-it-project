@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise IT Infrastructure — A Research Guide</title>
+  <link rel="stylesheet" href="enterprise-it.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="global-nav">
+  <span class="nav-logo">Enterprise IT</span>
+  <ul class="nav-links">
+    <li><a href="#device">Device</a></li>
+    <li><a href="#lan">Network</a></li>
+    <li><a href="#server">Server</a></li>
+    <li><a href="#enterprise">Systems</a></li>
+    <li><a href="#cloud">Cloud</a></li>
+    <li><a href="#penny">Case Study</a></li>
+    <li><a href="#cost">Cost</a></li>
+  </ul>
+</nav>
+<div class="nav-progress"><div class="nav-progress-bar" id="progressBar"></div></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 · HERO
+════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="section-inner" style="padding-top: 144px;">
+    <p class="section-label on-dark reveal">Gifted Student Research Project · 2026</p>
+    <h1 class="hero-display reveal reveal-d1">How Enterprises<br>Stay Connected.</h1>
+    <p class="lead reveal reveal-d2">From a single network card to a global data center.<br>A complete technical journey through enterprise IT infrastructure.</p>
+    <a href="#device" class="btn-primary reveal reveal-d3">Begin Reading</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 · THE SINGLE DEVICE
+════════════════════════════════════════════ -->
+<section id="device" style="background: var(--canvas);">
+  <div class="section-inner">
+    <p class="section-label reveal">Chapter 01</p>
+    <div class="device-grid">
+      <div>
+        <h2 class="display-lg reveal reveal-d1">The Single Device.</h2>
+        <p class="lead reveal reveal-d2" style="margin-top: 16px;">Every enterprise network begins here — one machine, one identity, one address.</p>
+        <div class="device-facts">
+          <div class="fact-item reveal reveal-d2">
+            <h4>NIC — Network Interface Card</h4>
+            <p>The physical hardware that connects a device to a network. Modern NICs support speeds from 1 Gbps to 100 Gbps and handle the conversion between digital data and electrical or optical signals.</p>
+          </div>
+          <div class="fact-item reveal reveal-d3">
+            <h4>MAC Address</h4>
+            <p>A 48-bit hardware identifier burned into the NIC at manufacture. Written as six pairs of hex digits (e.g. <code style="font-size:13px; background:#f5f5f7; padding:2px 6px; border-radius:4px;">A4:B1:C2:D3:E4:F5</code>). Unique to each card globally — used for Layer 2 delivery within a local segment.</p>
+          </div>
+          <div class="fact-item reveal reveal-d4">
+            <h4>IP Address</h4>
+            <p>A logical Layer 3 address assigned by a DHCP server or configured statically. IPv4 uses 32-bit notation (192.168.1.42). IPv6 uses 128-bit hex. This is the address that routes traffic across networks and the internet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram reveal reveal-d2" style="position:relative;">
+        <svg viewBox="0 0 340 420" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-height:480px;">
+          <!-- Monitor / computer body -->
+          <rect x="60" y="30" width="220" height="160" rx="8" fill="#f5f5f7" stroke="#e0e0e0" stroke-width="1"/>
+          <rect x="72" y="42" width="196" height="136" rx="4" fill="#1d1d1f"/>
+          <!-- Screen glint lines -->
+          <line x1="80" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <!-- Stand -->
+          <rect x="150" y="190" width="40" height="28" rx="2" fill="#e0e0e0"/>
+          <rect x="120" y="218" width="100" height="6" rx="3" fill="#d2d2d7"/>
+          <!-- NIC chip callout -->
+          <rect x="100" y="90" width="50" height="30" rx="3" fill="#0066cc" opacity="0.15" stroke="#0066cc" stroke-width="1"/>
+          <text x="125" y="109" font-size="9" fill="#0066cc" text-anchor="middle" font-family="system-ui" font-weight="600">NIC</text>
+          <line x1="150" y1="105" x2="240" y2="105" stroke="#0066cc" stroke-width="0.75" stroke-dasharray="3,3"/>
+          <text x="245" y="102" font-size="11" fill="#0066cc" font-family="system-ui" font-weight="600">Network</text>
+          <text x="245" y="116" font-size="11" fill="#0066cc" font-family="system-ui" font-weight="600">Interface Card</text>
+          <!-- MAC callout -->
+          <rect x="160" y="60" width="50" height="22" rx="3" fill="#272729"/>
+          <text x="185" y="75" font-size="8" fill="white" text-anchor="middle" font-family="monospace">A4:B1:C2</text>
+          <line x1="160" y1="71" x2="50" y2="71" stroke="#7a7a7a" stroke-width="0.75" stroke-dasharray="3,3"/>
+          <text x="8" y="68" font-size="10" fill="#7a7a7a" font-family="system-ui">MAC</text>
+          <text x="8" y="82" font-size="10" fill="#7a7a7a" font-family="system-ui">Address</text>
+          <!-- IP label -->
+          <rect x="100" y="130" width="50" height="22" rx="3" fill="#f5f5f7" stroke="#e0e0e0" stroke-width="1"/>
+          <text x="125" y="145" font-size="8" fill="#1d1d1f" text-anchor="middle" font-family="monospace">192.168.1.42</text>
+          <line x1="100" y1="141" x2="50" y2="141" stroke="#7a7a7a" stroke-width="0.75" stroke-dasharray="3,3"/>
+          <text x="8" y="138" font-size="10" fill="#7a7a7a" font-family="system-ui">IP</text>
+          <text x="8" y="152" font-size="10" fill="#7a7a7a" font-family="system-ui">Address</text>
+          <!-- OSI Layer labels -->
+          <g transform="translate(0, 270)">
+            <text x="60" y="20" font-size="10" fill="#7a7a7a" font-family="system-ui" font-weight="600" letter-spacing="0.06em">OSI LAYERS</text>
+            <rect x="60" y="32" width="220" height="1" fill="#e0e0e0"/>
+            <g>
+              <rect x="60" y="40" width="66" height="22" rx="3" fill="#f5f5f7" stroke="#e0e0e0" stroke-width="1"/>
+              <text x="93" y="55" font-size="9" fill="#1d1d1f" text-anchor="middle" font-family="system-ui">Physical (L1)</text>
+            </g>
+            <g>
+              <rect x="132" y="40" width="66" height="22" rx="3" fill="#f5f5f7" stroke="#0066cc" stroke-width="1"/>
+              <text x="165" y="55" font-size="9" fill="#0066cc" text-anchor="middle" font-family="system-ui">Data Link (L2)</text>
+            </g>
+            <g>
+              <rect x="204" y="40" width="66" height="22" rx="3" fill="#0066cc"/>
+              <text x="237" y="55" font-size="9" fill="white" text-anchor="middle" font-family="system-ui">Network (L3)</text>
+            </g>
+            <text x="60" y="84" font-size="10" fill="#7a7a7a" font-family="system-ui">MAC addresses live at L2.</text>
+            <text x="60" y="100" font-size="10" fill="#7a7a7a" font-family="system-ui">IP addresses operate at L3.</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 · THE LOCAL NETWORK (LAN)
+════════════════════════════════════════════ -->
+<section id="lan" style="background: var(--parchment);">
+  <div class="section-inner wide">
+    <p class="section-label reveal">Chapter 02</p>
+    <h2 class="display-lg reveal reveal-d1">The Local Network.</h2>
+    <p class="lead reveal reveal-d2" style="margin-top:16px; max-width:600px;">Inside an enterprise, devices communicate across a LAN — a structured hierarchy of switches, routers, and protocols moving data at wire speed.</p>
+    <div class="diagram-container reveal reveal-d3" id="lanDiagram" style="position:relative;">
+      <!-- LAN SVG rendered by JS -->
+    </div>
+    <div class="diagram-caption-row reveal reveal-d4">
+      <div class="diagram-key"><div class="diagram-key-dot"></div><span>Ethernet (switched)</span></div>
+      <div class="diagram-key"><div class="diagram-key-line"></div><span>Animated data flow</span></div>
+      <span class="caption">Hover any node for details.</span>
+    </div>
+    <div class="device-facts" style="margin-top: 48px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div class="fact-item reveal reveal-d2">
+          <h4>Layer 2 Switch</h4>
+          <p>Forwards frames using MAC address tables. Learns which devices are on which port. Operates in microseconds. Enterprise switches support VLANs, spanning tree, and link aggregation.</p>
+        </div>
+        <div class="fact-item reveal reveal-d3">
+          <h4>Layer 3 Router</h4>
+          <p>Routes packets between different IP subnets using routing tables. The gateway between the internal LAN and the outside world. Enforces subnet boundaries and handles NAT.</p>
+        </div>
+        <div class="fact-item reveal reveal-d4">
+          <h4>ARP &amp; DHCP</h4>
+          <p>ARP resolves an IP address to a MAC address within a subnet. DHCP automatically assigns IP addresses, subnet masks, default gateways, and DNS servers to new devices.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="svg-tooltip" id="lanTooltip"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 · INSIDE THE SERVER
+════════════════════════════════════════════ -->
+<section id="server" style="background: var(--tile-1);">
+  <div class="section-inner wide">
+    <p class="section-label on-dark reveal">Chapter 03</p>
+    <h2 class="display-lg reveal reveal-d1" style="color:#fff;">Inside the Server.</h2>
+    <p class="lead reveal reveal-d2" style="color:var(--muted-on-dark); margin-top:16px; max-width:580px;">A rack-mounted server is a purpose-built machine — every component optimized for continuous operation, redundancy, and throughput. Click any label to learn more.</p>
+    <div class="server-diagram-wrap reveal reveal-d3" id="serverDiagram" style="position:relative;">
+      <!-- Server SVG rendered by JS -->
+    </div>
+    <div id="serverInfoCard" class="component-info-card">
+      <button class="close-card" id="closeCard">×</button>
+      <h3 id="cardTitle"></h3>
+      <p id="cardBody"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 · THE SERVER ROOM
+════════════════════════════════════════════ -->
+<section id="server-room" style="background: var(--canvas);">
+  <div class="section-inner">
+    <p class="section-label reveal">Chapter 04</p>
+    <h2 class="display-lg reveal reveal-d1">The Server Room.</h2>
+    <p class="lead reveal reveal-d2" style="margin-top:16px; max-width:560px;">Infrastructure exists in physical space. Racks, cooling, power, and physical security are as critical as the software running on them.</p>
+    <div class="server-room-grid">
+      <div class="diagram reveal reveal-d2" id="rackDiagram"></div>
+      <div class="room-features">
+        <div class="room-feature reveal reveal-d2">
+          <div class="room-feature-icon"><svg viewBox="0 0 24 24"><path d="M3 5h18v3H3zM3 11h18v3H3zM3 17h18v3H3z" stroke-linecap="round"/></svg></div>
+          <div><h4>Server Racks</h4><p>Standard 42U server racks hold multiple 1U or 2U rack-mounted servers. Each U is 1.75 inches. Cable management, blanking panels, and airflow baffles are critical for cooling efficiency.</p></div>
+        </div>
+        <div class="room-feature reveal reveal-d3">
+          <div class="room-feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6l2.1-2.1" stroke-linecap="round"/></svg></div>
+          <div><h4>Precision Cooling (CRAC)</h4><p>Computer Room Air Conditioning units maintain 65–75°F with tight humidity control. Hot-aisle/cold-aisle containment directs airflow efficiently. Larger DCs use liquid cooling directly on chips.</p></div>
+        </div>
+        <div class="room-feature reveal reveal-d4">
+          <div class="room-feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><h4>Power Distribution (PDU)</h4><p>Enterprise PDUs distribute 208V or 240V power to individual rack units. Redundant A+B power feeds with UPS (Uninterruptible Power Supply) and diesel generators ensure zero downtime.</p></div>
+        </div>
+        <div class="room-feature reveal reveal-d5">
+          <div class="room-feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round"/></svg></div>
+          <div><h4>Physical Security</h4><p>Mantrap entry systems, badge readers, biometrics, CCTV with motion detection, and cage locks on individual racks. Access logs are kept for compliance auditing (SOC 2, ISO 27001).</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 · ENTERPRISE SYSTEMS
+════════════════════════════════════════════ -->
+<section id="enterprise" style="background: var(--tile-2);">
+  <div class="section-inner wide">
+    <p class="section-label on-dark reveal">Chapter 05</p>
+    <h2 class="display-lg reveal reveal-d1" style="color:#fff;">Enterprise Systems.</h2>
+    <p class="lead reveal reveal-d2" style="color:var(--muted-on-dark); margin-top:16px; max-width:600px;">Software layers running on top of hardware. Active Directory, SQL Server, hypervisors, VLANs, and firewalls — each plays a critical role in how an enterprise functions.</p>
+    <div class="enterprise-diagram reveal reveal-d3" id="enterpriseDiagram"></div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px;">
+      <div class="fact-item reveal reveal-d2" style="border-color: rgba(255,255,255,0.1);">
+        <h4 style="color: var(--primary-dark);">Active Directory</h4>
+        <p class="body-text on-dark">Microsoft's directory service. Authenticates and authorizes users and computers. Group Policy Objects (GPOs) enforce security settings across every machine in the domain.</p>
+      </div>
+      <div class="fact-item reveal reveal-d3" style="border-color: rgba(255,255,255,0.1);">
+        <h4 style="color: var(--primary-dark);">VLANs</h4>
+        <p class="body-text on-dark">Virtual LANs logically segment a physical network. A store's POS terminals, cameras, and employee computers can share the same switch but remain isolated from each other — improving security and reducing broadcast traffic.</p>
+      </div>
+      <div class="fact-item reveal reveal-d4" style="border-color: rgba(255,255,255,0.1);">
+        <h4 style="color: var(--primary-dark);">Virtualization</h4>
+        <p class="body-text on-dark">Hypervisors (VMware ESXi, Hyper-V) run multiple virtual machines on a single physical host. A single server can host a domain controller, SQL instance, and file server simultaneously.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7 · CLOUD & HYBRID
+════════════════════════════════════════════ -->
+<section id="cloud" style="background: var(--parchment);">
+  <div class="section-inner wide">
+    <p class="section-label reveal">Chapter 06</p>
+    <h2 class="display-lg reveal reveal-d1">Cloud &amp; Hybrid Infrastructure.</h2>
+    <p class="lead reveal reveal-d2" style="margin-top:16px; max-width:600px;">Modern enterprises rarely choose between on-premise and cloud — they blend both into a hybrid architecture, connecting physical data centers to AWS, Azure, or GCP.</p>
+    <div class="cloud-compare reveal reveal-d3">
+      <div class="cloud-card">
+        <span class="cloud-tag">Traditional</span>
+        <h3>On-Premise</h3>
+        <p class="body-text" style="margin: 12px 0;">Full control. Full responsibility.</p>
+        <ul>
+          <li>Capital expenditure model (CapEx)</li>
+          <li>Hardware owned and maintained in-house</li>
+          <li>Predictable latency, no egress fees</li>
+          <li>Compliance-friendly for sensitive data</li>
+          <li>Scaling requires physical procurement</li>
+        </ul>
+      </div>
+      <div class="cloud-card featured">
+        <span class="cloud-tag">Most Common</span>
+        <h3>Hybrid</h3>
+        <p class="body-text" style="margin: 12px 0;">The enterprise standard. Best of both worlds.</p>
+        <ul>
+          <li>Core systems on-prem, bursting to cloud</li>
+          <li>Azure AD Connect syncs identities</li>
+          <li>VPN or ExpressRoute/Direct Connect link</li>
+          <li>Data residency controls maintained</li>
+          <li>DR and backup in cloud, production on-prem</li>
+        </ul>
+      </div>
+      <div class="cloud-card">
+        <span class="cloud-tag">Modern</span>
+        <h3>Cloud-Native</h3>
+        <p class="body-text" style="margin: 12px 0;">Elastic, global, operational expenditure.</p>
+        <ul>
+          <li>OpEx model — pay per consumption</li>
+          <li>Kubernetes, serverless, managed databases</li>
+          <li>Global CDN and edge locations</li>
+          <li>Auto-scaling without hardware lead times</li>
+          <li>Vendor dependency and egress costs</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cloud-diagram reveal reveal-d4" id="cloudDiagram"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8 · PINCH A PENNY
+════════════════════════════════════════════ -->
+<section id="penny" style="background: var(--canvas);">
+  <div class="section-inner wide">
+    <p class="section-label reveal">Chapter 07 · Case Study</p>
+    <div class="case-study-header">
+      <div>
+        <h2 class="display-lg reveal reveal-d1">Pinch a Penny<br>Pool &amp; Patio.</h2>
+        <p class="lead reveal reveal-d2" style="margin-top:16px;">A mid-size retail pool supply franchise with 280+ franchise-owned stores across the southeastern United States — and a uniquely challenging IT environment.</p>
+        <p class="body-text reveal reveal-d3" style="margin-top:24px;">Each Pinch a Penny location sells pool chemicals, equipment, and services. The chemical environment — chlorine, algaecides, and oxidizers — creates a corrosive atmosphere that accelerates hardware failure. Network infrastructure, servers, and even power supplies degrade faster than in standard retail environments. This makes IT maintenance both more frequent and more costly than typical franchise operations.</p>
+      </div>
+      <div class="case-study-stats reveal reveal-d3">
+        <div class="stat-card"><div class="stat-num">280+</div><div class="stat-label">Franchise locations</div></div>
+        <div class="stat-card"><div class="stat-num">~10</div><div class="stat-label">Avg. devices per store</div></div>
+        <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">POS uptime requirement</div></div>
+        <div class="stat-card"><div class="stat-num">SE US</div><div class="stat-label">Regional footprint</div></div>
+      </div>
+    </div>
+    <div class="challenge-grid">
+      <div class="challenge-item reveal reveal-d2">
+        <h4>Chlorine Corrosion</h4>
+        <p>Chlorine vapor corrodes metal contacts on NICs, PSUs, and motherboards. Stores require sealed enclosures or frequent hardware replacement. Some franchisees house servers in separate utility closets with air filtration.</p>
+      </div>
+      <div class="challenge-item reveal reveal-d3">
+        <h4>Local Server vs. Cloud POS</h4>
+        <p>Older stores use local Windows servers running the point-of-sale database. Newer stores migrate to cloud-hosted POS (NCR Counterpoint). Both models must coexist across the franchise network.</p>
+      </div>
+      <div class="challenge-item reveal reveal-d4">
+        <h4>Nightly Backup Strategy</h4>
+        <p>Each store runs scheduled nightly backups of transaction data to either a local NAS device or a cloud storage bucket. Backup windows are typically 1–3 AM when the store is closed. Restores are tested quarterly.</p>
+      </div>
+      <div class="challenge-item reveal reveal-d5">
+        <h4>No VLANs (Legacy Stores)</h4>
+        <p>Many older franchise locations run flat networks — POS terminals, security cameras, and employee devices share the same broadcast domain. This creates security risk and is a known vulnerability in franchise retail IT.</p>
+      </div>
+      <div class="challenge-item reveal reveal-d2">
+        <h4>Franchise IT Autonomy</h4>
+        <p>Because locations are independently owned, franchisees make their own hardware purchasing decisions. This results in a heterogeneous environment — different router brands, varying switch quality, and inconsistent patch management.</p>
+      </div>
+      <div class="challenge-item reveal reveal-d3">
+        <h4>Payment Security (PCI DSS)</h4>
+        <p>All stores must maintain PCI DSS compliance to process credit cards. This mandates network segmentation of cardholder data, regular vulnerability scans, and strict access controls — requirements that clash with flat-network legacy setups.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9 · THE COST OF IT ALL
+════════════════════════════════════════════ -->
+<section id="cost" style="background: var(--tile-3);">
+  <div class="section-inner wide">
+    <p class="section-label on-dark reveal">Chapter 08</p>
+    <h2 class="display-lg reveal reveal-d1" style="color:#fff;">The Cost of It All.</h2>
+    <p class="lead reveal reveal-d2" style="color:var(--muted-on-dark); margin-top:16px; max-width:600px;">Enterprise IT is one of the largest line items in a company's budget. Understanding CapEx vs. OpEx — and the hidden costs — is essential for IT leadership.</p>
+    <div class="cost-grid">
+      <div class="cost-category reveal reveal-d2">
+        <h3>CapEx — Capital Expenditure</h3>
+        <div class="cost-bar-group">
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Server hardware (per unit)</span><span>$8,000–$40,000</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="85"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Enterprise switch (48-port)</span><span>$3,000–$15,000</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="55"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>UPS &amp; power infrastructure</span><span>$5,000–$25,000</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="70"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Cabling &amp; installation</span><span>$2,000–$12,000</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="40"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Firewall appliance</span><span>$2,000–$20,000</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="50"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cost-category reveal reveal-d3">
+        <h3>OpEx — Operational Expenditure</h3>
+        <div class="cost-bar-group">
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Microsoft 365 (per seat/yr)</span><span>$180–$420</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="45"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Azure/AWS cloud (monthly)</span><span>$500–$50,000+</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="100"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>IT staff (annual salary)</span><span>$65k–$140k</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="75"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>Managed service contract</span><span>$1,000–$8,000/mo</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="60"></div></div>
+          </div>
+          <div class="cost-bar-item">
+            <div class="cost-bar-label"><span>ISP &amp; connectivity</span><span>$200–$2,000/mo</span></div>
+            <div class="cost-bar-track"><div class="cost-bar-fill" data-width="30"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cost-insight reveal reveal-d4">
+        <p>The average mid-size enterprise (500 employees) spends <strong>6–10% of annual revenue on IT</strong>. The hidden costs are rarely the hardware — they're the <strong>licensing, staff, compliance auditing, downtime recovery, and vendor support contracts</strong> that accumulate invisibly. A single hour of downtime costs the average enterprise <strong>$5,600</strong> (Gartner). For a retailer like Pinch a Penny, a failed POS server during a Saturday rush is a direct, measurable revenue loss.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Enterprise IT Infrastructure · A Gifted Student Research Project · 2026</p>
+  <p style="margin-top: 8px;">Produced using the Apple design language. For educational purposes only.</p>
+</footer>
+
+<script src="enterprise-it.js"></script>
+</body>
+</html>
