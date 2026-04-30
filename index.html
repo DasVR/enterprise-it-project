@@ -814,6 +814,188 @@ hr.hairline { border: 0; height: 1px; background: var(--hairline); margin: 0; }
 .licensing-callout p { color: var(--body-muted); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; }
 
 /* ─────────────────────────────────────────────────────────────
+   INTERVIEW CAROUSEL — editorial interlude
+   ───────────────────────────────────────────────────────────── */
+.interview-carousel {
+  position: relative;
+  margin-top: 48px;
+}
+.iq-viewport { overflow: hidden; }
+.iq-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: transform;
+}
+.iq-card {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 56px 8px 24px;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 833px) { .iq-card { padding: 40px 4px 24px; } }
+
+.iq-quote {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--ink);
+  position: relative;
+  padding-top: 56px;
+  margin: 0;
+  max-width: 22ch;
+}
+.iq-quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -16px;
+  left: -10px;
+  font-family: var(--font-display);
+  font-size: 112px;
+  color: var(--primary);
+  line-height: 1;
+  font-weight: 600;
+}
+@media (max-width: 833px) {
+  .iq-quote { font-size: 32px; line-height: 1.12; padding-top: 44px; }
+  .iq-quote::before { font-size: 80px; top: -10px; left: -4px; }
+}
+@media (max-width: 640px) {
+  .iq-quote { font-size: 26px; line-height: 1.14; padding-top: 36px; }
+  .iq-quote::before { font-size: 64px; top: -8px; left: -2px; }
+}
+
+.iq-rule {
+  border: 0;
+  height: 1px;
+  background: var(--hairline);
+  margin: 32px 0 24px;
+  width: 64px;
+}
+
+.iq-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  color: var(--ink-muted-80);
+  max-width: 600px;
+}
+
+.iq-transcript {
+  margin-top: 40px;
+  max-width: 720px;
+}
+.iq-transcript-label {
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted-48);
+  margin: 0 0 14px;
+}
+.iq-dialogue {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #666;
+  background: #f5f5f7;
+  padding: 24px 28px;
+  border-radius: 11px;
+  margin: 0;
+}
+.iq-dialogue > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 2px 16px;
+  margin-bottom: 14px;
+}
+.iq-dialogue > div:last-child { margin-bottom: 0; }
+.iq-dialogue dt {
+  color: var(--ink-muted-80);
+  font-weight: 600;
+}
+.iq-dialogue dd { margin: 0; }
+@media (max-width: 640px) {
+  .iq-dialogue { padding: 20px 22px; font-size: 12px; }
+  .iq-dialogue > div { grid-template-columns: 1fr; gap: 2px; margin-bottom: 12px; }
+  .iq-dialogue dt::after { content: ':'; }
+}
+
+/* Carousel nav buttons — minimal chevrons */
+.iq-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--hairline);
+  background: var(--canvas);
+  border-radius: 9999px;
+  cursor: pointer;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 200ms var(--easing), border-color 200ms var(--easing), color 200ms var(--easing);
+  z-index: 2;
+  padding: 0;
+}
+.iq-nav:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.iq-nav:active { transform: translateY(-50%) scale(0.95); }
+.iq-nav svg { width: 22px; height: 22px; display: block; }
+.iq-prev { left: -72px; }
+.iq-next { right: -72px; }
+@media (max-width: 1140px) {
+  .iq-prev { left: 0; }
+  .iq-next { right: 0; }
+}
+@media (max-width: 640px) {
+  .iq-nav { width: 40px; height: 40px; }
+  .iq-nav svg { width: 18px; height: 18px; }
+}
+
+/* Dot indicators */
+.iq-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+.iq-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--hairline);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background 200ms var(--easing), width 250ms var(--easing);
+}
+.iq-dot:hover:not(.active) { background: var(--ink-muted-48); }
+.iq-dot.active { background: var(--ink); width: 24px; }
+
+.iq-counter {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-muted-48);
+  letter-spacing: -0.12px;
+  line-height: 1.3;
+}
+
+/* ─────────────────────────────────────────────────────────────
    SOURCES & REFERENCES
    ───────────────────────────────────────────────────────────── */
 .sources-list {
@@ -1378,6 +1560,125 @@ footer p.title {
         <div class="lbl">Hypervisors (VMware ESXi, Hyper-V, Proxmox) run dozens of virtual machines on one physical box. Pinch a Penny runs two VMs per store — one for Active Directory, one for SQL transaction logging.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     INTERLUDE — INTERVIEW CAROUSEL
+═════════════════════════════════════════════════════════════ -->
+<section class="section" id="interview" aria-labelledby="interviewTitle">
+  <div class="container narrow">
+    <p class="eyebrow reveal">Interview — IT Support Specialist, Pinch a Penny</p>
+    <h2 id="interviewTitle" class="display-lg reveal d1" style="margin-top:12px">In his own words.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">I sat down with the IT specialist who keeps the franchise running. Six things he said wouldn't leave my head.</p>
+
+    <div class="interview-carousel reveal d3"
+         id="interviewCarousel"
+         role="region"
+         aria-roledescription="carousel"
+         aria-label="Interview excerpts">
+      <div class="iq-viewport">
+        <div class="iq-track" id="iqTrack">
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="1 of 6 — People skills">
+            <blockquote class="iq-quote">You can't teach somebody people skills, but you can teach somebody a trade.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">The first rule of IT support — before networking, before servers. Technical skills can be learned. The ability to stay calm with a frustrated, non-technical person on the line cannot.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"It seems like people skills would be really important."</dd></div>
+                <div><dt>Participant</dt><dd>"People skills is going to be your number one skill. You can't teach somebody people skills, but you can teach somebody a trade."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="2 of 6 — Flat network" aria-hidden="true">
+            <blockquote class="iq-quote">The entire network is physical — there's no logical separation.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">No VLANs. Every device in the store shares one network — POS registers, cameras, office computers, the back-room server. Bandwidth demand is so low, segmentation simply isn't needed.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"Do they use VLANs or anything like that?"</dd></div>
+                <div><dt>Participant</dt><dd>"Nope. We have a workstation that functions as a server — and the entire network is physical, no logical separation."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="3 of 6 — Workstation as server" aria-hidden="true">
+            <blockquote class="iq-quote">You can spend a little and replace it often, or spend a lot upfront and not touch it for a decade.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">Real servers have two power supplies, ECC memory, and engineered airflow. Theirs have none of that. It's a deliberate CapEx vs OpEx tradeoff — and the IT specialist doesn't personally agree with it.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"Why don't you agree with that methodology?"</dd></div>
+                <div><dt>Participant</dt><dd>"There's no redundancy. With an actual server you have two power supplies, two CPUs, error-correcting memory. We don't have any of that."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="4 of 6 — Chlorine" aria-hidden="true">
+            <blockquote class="iq-quote">The chlorine gas just eats all the hardware, no matter where it is in the store.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">Case fans burn out within two years. Ceiling tiles are missing. Ventilation hoods above chemical filling stations mostly don't work. The fix is DeOxit — a contact cleaner that dissolves corrosion and leaves a protective conductive film.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"Is there a way to help with that issue?"</dd></div>
+                <div><dt>Participant</dt><dd>"There's one thing I recommend — it's called DeOxit. It melts off corrosion on contacts and leaves behind an oily, electrically conductive film."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="5 of 6 — Internet outage" aria-hidden="true">
+            <blockquote class="iq-quote">There's always somebody whose internet is down — because of the sheer number of stores we operate.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">Every store runs its own on-premise server so it can keep logging transactions without internet. The only thing that actually fails during an outage is credit card processing — it has to reach the outside world to authenticate.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"Is there anything that would go down that would be a big issue if the internet went out?"</dd></div>
+                <div><dt>Participant</dt><dd>"Credit card processing. They still have to reach out to the outside world to authenticate."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="iq-card" role="group" aria-roledescription="slide" aria-label="6 of 6 — IT is invisible" aria-hidden="true">
+            <blockquote class="iq-quote">You probably don't realize how much of your life runs on IT infrastructure.</blockquote>
+            <hr class="iq-rule">
+            <p class="iq-body">When you open an app on your phone, you don't think about the server. You just think it works. That invisibility — millions of invisible decisions running silently in the background — is the job done right.</p>
+            <div class="iq-transcript">
+              <p class="iq-transcript-label">From the interview</p>
+              <dl class="iq-dialogue">
+                <div><dt>You</dt><dd>"Is there anything about IT that people don't really understand about its importance?"</dd></div>
+                <div><dt>Participant</dt><dd>"When they use Twitter, they don't realize that's relying on a server. They just think it's running on their phone."</dd></div>
+              </dl>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <button type="button" class="iq-nav iq-prev" id="iqPrev" aria-label="Previous excerpt">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="iq-nav iq-next" id="iqNext" aria-label="Next excerpt">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 L15 12 L9 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div class="iq-dots reveal d4" role="tablist" aria-label="Choose interview excerpt">
+      <button type="button" class="iq-dot active" data-index="0" aria-label="Excerpt 1: People skills" aria-selected="true"></button>
+      <button type="button" class="iq-dot" data-index="1" aria-label="Excerpt 2: Flat network" aria-selected="false"></button>
+      <button type="button" class="iq-dot" data-index="2" aria-label="Excerpt 3: Workstation as server" aria-selected="false"></button>
+      <button type="button" class="iq-dot" data-index="3" aria-label="Excerpt 4: Chlorine" aria-selected="false"></button>
+      <button type="button" class="iq-dot" data-index="4" aria-label="Excerpt 5: Internet outage" aria-selected="false"></button>
+      <button type="button" class="iq-dot" data-index="5" aria-label="Excerpt 6: IT is invisible" aria-selected="false"></button>
+    </div>
+
+    <p class="iq-counter reveal d4" aria-live="polite"><span id="iqCurrent">1</span> / 6 · use ← → keys, swipe, or tap</p>
   </div>
 </section>
 
@@ -2027,6 +2328,95 @@ const counterObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
 
 /* Flow lines now draw once on .reveal.in via CSS transition — no JS needed. */
+
+/* ─────────────────────────────────────────────────────────────
+   INTERVIEW CAROUSEL
+   ───────────────────────────────────────────────────────────── */
+(function initInterviewCarousel() {
+  const track = document.getElementById('iqTrack');
+  if (!track) return;
+  const cards = track.querySelectorAll('.iq-card');
+  const dots = document.querySelectorAll('.iq-dot');
+  const prev = document.getElementById('iqPrev');
+  const next = document.getElementById('iqNext');
+  const counter = document.getElementById('iqCurrent');
+  const carousel = document.getElementById('interviewCarousel');
+  const total = cards.length;
+  let idx = 0;
+
+  function update() {
+    track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+    dots.forEach((d, i) => {
+      const active = i === idx;
+      d.classList.toggle('active', active);
+      d.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (counter) counter.textContent = idx + 1;
+    cards.forEach((c, i) => c.setAttribute('aria-hidden', i !== idx ? 'true' : 'false'));
+  }
+  function go(n) {
+    idx = ((n % total) + total) % total;
+    update();
+  }
+
+  prev.addEventListener('click', () => go(idx - 1));
+  next.addEventListener('click', () => go(idx + 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+
+  /* Keyboard — only when carousel is on-screen and no input/dialog is focused */
+  document.addEventListener('keydown', (e) => {
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    if (typeof infoCard !== 'undefined' && infoCard && infoCard.classList.contains('show')) return;
+    const r = carousel.getBoundingClientRect();
+    const visible = r.bottom > 200 && r.top < window.innerHeight - 200;
+    if (!visible) return;
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(idx - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(idx + 1); }
+  });
+
+  /* Touch swipe — live drag, snap on release */
+  let startX = 0, startY = 0, dx = 0, isDragging = false, isHorizontal = null;
+  track.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dx = 0;
+    isDragging = true;
+    isHorizontal = null;
+  }, { passive: true });
+  track.addEventListener('touchmove', (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    const ddx = e.touches[0].clientX - startX;
+    const ddy = e.touches[0].clientY - startY;
+    if (isHorizontal === null) {
+      if (Math.abs(ddx) < 8 && Math.abs(ddy) < 8) return;
+      isHorizontal = Math.abs(ddx) > Math.abs(ddy);
+      if (!isHorizontal) { isDragging = false; return; }
+      track.style.transition = 'none';
+    }
+    if (!isHorizontal) return;
+    dx = ddx;
+    const w = track.offsetWidth;
+    const pct = -idx * 100 + (dx / w) * 100;
+    track.style.transform = 'translateX(' + pct + '%)';
+  }, { passive: true });
+  track.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = '';
+    if (Math.abs(dx) > 50) go(dx < 0 ? idx + 1 : idx - 1);
+    else update();
+  }, { passive: true });
+  track.addEventListener('touchcancel', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.transition = '';
+    update();
+  }, { passive: true });
+
+  update();
+})();
 </script>
 
 </body>
