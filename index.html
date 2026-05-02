@@ -1378,6 +1378,86 @@ footer p.title {
 .section.dark-3 .takeaway .label { color: var(--primary-on-dark); }
 
 /* ─────────────────────────────────────────────────────────────
+   GLOSSARY — collapsible 10-term reference panel
+   ───────────────────────────────────────────────────────────── */
+.glossary {
+  margin-top: 56px;
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  background: var(--canvas);
+  overflow: hidden;
+}
+.glossary > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 22px 28px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: background 200ms var(--easing);
+}
+.glossary > summary::-webkit-details-marker { display: none; }
+.glossary > summary:hover { background: var(--pearl); }
+.glossary > summary .hint {
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-muted-48);
+  letter-spacing: -0.12px;
+  text-transform: none;
+}
+.glossary > summary::after {
+  content: '+';
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--primary);
+  line-height: 1;
+  transition: transform 240ms var(--easing);
+}
+.glossary[open] > summary::after { content: '\2212'; }
+.glossary dl {
+  margin: 0;
+  padding: 8px 28px 28px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 14px 24px;
+  border-top: 1px solid var(--divider-soft);
+}
+@media (max-width: 720px) {
+  .glossary dl { grid-template-columns: 1fr; gap: 4px 0; padding: 16px 22px 22px; }
+  .glossary dt { padding-top: 14px; }
+}
+.glossary dt {
+  font-family: var(--font-text);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.224px;
+  padding-top: 14px;
+}
+.glossary dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: -0.224px;
+  color: var(--ink-muted-80);
+  padding-top: 14px;
+  border-top: 1px solid var(--divider-soft);
+}
+@media (max-width: 720px) {
+  .glossary dd { padding-top: 4px; border-top: 0; }
+  .glossary dt:not(:first-of-type) { border-top: 1px solid var(--divider-soft); }
+}
+
+/* ─────────────────────────────────────────────────────────────
    FIGURE CAPTION — tiny label under each numbered diagram/embed
    ───────────────────────────────────────────────────────────── */
 .figure-caption {
@@ -2413,7 +2493,7 @@ footer p.title {
   <div class="container wide">
     <p class="eyebrow reveal">Chapter 08</p>
     <h2 class="display-lg reveal d1" style="margin-top:12px">The Cost of It All.</h2>
-    <p class="lead reveal d2" style="margin-top:20px">Quick. Guess what costs more: the rack of servers, or the licenses that let you legally turn them on? It's the licenses. It's almost always the licenses. The hardware is just the part you can see.</p>
+    <p class="lead reveal d2" style="margin-top:20px">Remember the thesis at the top: <em>your Wi-Fi works because somebody paid for boring</em>. This is where boring gets a price tag. Quick: guess what costs more, the rack of servers, or the licenses that let you legally turn them on? It's the licenses. It's almost always the licenses. The hardware is just the part you can see.</p>
 
     <!-- The hardware. Now the bill. -->
     <p class="caption reveal d2" style="margin-top:64px; color:var(--body-muted)">Here's the visible part. The part you can lift.</p>
@@ -2506,6 +2586,43 @@ footer p.title {
       <p>The second stream was primary research: a recorded interview with a working IT support specialist who maintains infrastructure across 280+ retail locations, plus on-site observation of one store's network closet. The interview transcript powers the entire <a href="#interview">interview carousel</a>. Names and store numbers are anonymized to protect the participant.</p>
       <p>Where a published source could not be pinned to a specific page or PDF, the figure is presented as a range or removed. Numbers presented as exact (e.g. <em>$723.4&nbsp;B</em>) link directly to the press release or report containing that exact figure.</p>
     </div>
+
+    <details class="glossary reveal d3" id="glossary">
+      <summary>
+        <span>Glossary <span class="hint">10 terms used throughout this site</span></span>
+      </summary>
+      <dl>
+        <dt>NIC</dt>
+        <dd>Network Interface Card. The physical hardware that lets a device speak to a network. Modern enterprise NICs run at 1–100 Gbps.</dd>
+
+        <dt>MAC Address</dt>
+        <dd>A 48-bit hardware identifier burned into a NIC at manufacture (e.g. <code>A4:B1:C2:D3:E4:F5</code>). Globally unique. Layer 2 of the OSI model.</dd>
+
+        <dt>IP Address</dt>
+        <dd>A logical address assigned by DHCP or set statically (e.g. <code>192.168.1.42</code>). The address that routes traffic across networks. Layer 3 of the OSI model.</dd>
+
+        <dt>VLAN</dt>
+        <dd>Virtual LAN. A logical slice of one physical switch into many isolated networks. Lets a single switch carry traffic for finance, IT, cameras, and guests without any of them seeing each other.</dd>
+
+        <dt>Active Directory (AD)</dt>
+        <dd>Microsoft's directory service. Authenticates and authorizes every user and computer in a domain, and pushes security policy through Group Policy.</dd>
+
+        <dt>Hypervisor</dt>
+        <dd>Software (VMware ESXi, Hyper-V, Proxmox) that runs many virtual machines on one physical box. The reason a single $20K server can host an entire small company.</dd>
+
+        <dt>BMC</dt>
+        <dd>Baseboard Management Controller. A tiny computer inside the server with its own NIC and OS. Lets an admin power-cycle, watch the console, or reinstall the server even when the main system is dead.</dd>
+
+        <dt>UPS</dt>
+        <dd>Uninterruptible Power Supply. The fridge-sized battery that keeps a rack alive for the few seconds between a utility power loss and the diesel generator coming online.</dd>
+
+        <dt>CapEx vs OpEx</dt>
+        <dd>Capital Expenditure (you buy the hardware, depreciate it over years) vs Operational Expenditure (you rent capacity from a cloud provider, every month, forever). The same workload can cost very different amounts depending on which one you choose.</dd>
+
+        <dt>Five Nines</dt>
+        <dd>99.999% uptime, the data-center industry's gold standard. Works out to about 5.26 minutes of downtime per year. Anything less than five nines is "we had an incident."</dd>
+      </dl>
+    </details>
 
     <ol class="sources-list reveal d3" id="bib">
       <li id="src-1">
@@ -2606,14 +2723,14 @@ const COMPONENT_INFO = {
     eyebrow: 'Compute', title: 'CPU',
     lead: 'Executes every instruction. The brain of the box.',
     body: [
-      'Enterprise servers run multi-core Intel Xeon or AMD EPYC processors — typically 16 to 128 cores per socket, with two sockets per host.',
+      'Enterprise servers run multi-core Intel Xeon or AMD EPYC processors, typically 16 to 128 cores per socket, with two sockets per host.',
       'Unlike a desktop chip, server CPUs are built to hold 100% load 24×7 without flinching. They support ECC memory, virtualization extensions (VT-x, AMD-V), and remote management hooks.'
     ],
     spec: 'Typical · 2× EPYC 9004 / 64 cores · 280 W TDP'
   },
   ram: {
     eyebrow: 'Memory', title: 'RAM × 8',
-    lead: 'ECC memory — silently corrects bit-flips before they corrupt your database.',
+    lead: 'ECC memory. Silently corrects bit-flips before they corrupt your database.',
     body: [
       'Enterprise servers use Error-Correcting Code (ECC) DDR5 RAM. Every read is checked against parity bits; single-bit errors are corrected on the fly, multi-bit errors are flagged.',
       'In a database or VM host, one undetected bit-flip can cascade into hours of corrupted state. ECC is non-negotiable for production workloads.'
@@ -2622,7 +2739,7 @@ const COMPONENT_INFO = {
   },
   nic: {
     eyebrow: 'Networking', title: 'NIC',
-    lead: 'The server\'s on-ramp to the network — at line rate.',
+    lead: 'The server\'s on-ramp to the network, at line rate.',
     body: [
       'Enterprise NICs run at 10, 25, 40, or 100 Gbps. They offload TCP, encryption, and (increasingly) entire virtual networks from the CPU.',
       'Most servers ship with two NIC ports configured as a bonded LACP pair so the failure of one cable, switch port, or top-of-rack switch doesn\'t take the host offline.'
@@ -2631,7 +2748,7 @@ const COMPONENT_INFO = {
   },
   storage: {
     eyebrow: 'Storage', title: 'Storage',
-    lead: 'Hot-swappable drive bays — replace a failed drive without ever powering down.',
+    lead: 'Hot-swappable drive bays. Replace a failed drive without ever powering down.',
     body: [
       'Front-loading 2.5″ bays accept enterprise NVMe, SAS, or SATA drives. Bays are hot-swappable: a failed drive is pulled and replaced while the server keeps running.',
       'Drives are arranged in a RAID set (or, more often today, a software-defined storage pool) so the loss of one or two drives is invisible to the workload.'
@@ -2640,7 +2757,7 @@ const COMPONENT_INFO = {
   },
   psu: {
     eyebrow: 'Power', title: 'PSU × 2',
-    lead: 'Redundant power supplies — if one fails, the server keeps running.',
+    lead: 'Redundant power supplies. If one fails, the server keeps running.',
     body: [
       'Enterprise servers ship with two power supplies, fed from two separate circuits in the rack (the "A side" and "B side" feeds).',
       'Either PSU alone can power the entire server. If one fails, blows a fuse, or its rack PDU drops, the second carries the full load with zero interruption to the workload.'
@@ -2649,7 +2766,7 @@ const COMPONENT_INFO = {
   },
   motherboard: {
     eyebrow: 'Backplane', title: 'Motherboard',
-    lead: 'The backbone — every component plugs into this.',
+    lead: 'The backbone. Every component plugs into this.',
     body: [
       'A server motherboard is engineered around throughput and density: dual or quad CPU sockets, 16 to 32 RAM slots, multiple PCIe Gen5 lanes, and a dedicated management network.',
       'It is not consumer hardware. The board itself, with no CPUs or RAM populated, can cost more than an entire desktop PC.'
@@ -2658,17 +2775,17 @@ const COMPONENT_INFO = {
   },
   bmc: {
     eyebrow: 'Management', title: 'BMC',
-    lead: 'A tiny computer-inside-the-computer — runs even when the server is "off".',
+    lead: 'A tiny computer-inside-the-computer. Runs even when the server is "off".',
     body: [
       'The Baseboard Management Controller is an independent ARM processor on the motherboard with its own NIC, OS, and IP address.',
-      'Through the BMC, an admin in another country can power-cycle the server, watch its console, mount an ISO, and reinstall the OS — even when the main system is dead. iDRAC (Dell), iLO (HPE), and IPMI are all BMC implementations.'
+      'Through the BMC, an admin in another country can power-cycle the server, watch its console, mount an ISO, and reinstall the OS, even when the main system is dead. iDRAC (Dell), iLO (HPE), and IPMI are all BMC implementations.'
     ],
-    spec: 'Typical · iDRAC 9 / iLO 6 — separate dedicated NIC'
+    spec: 'Typical · iDRAC 9 / iLO 6 · separate dedicated NIC'
   },
   /* SECTION 5 — RACK */
   'rack-1u': {
     eyebrow: 'Compute', title: '1U Server Units',
-    lead: 'The unit of measure — and the workhorse of the rack.',
+    lead: 'The unit of measure, and the workhorse of the rack.',
     body: [
       'A "U" is 1.75 inches (44.45 mm) of vertical rack space. A standard rack is 42U tall, so 42 separate 1U servers can be stacked floor to ceiling.',
       'Most modern racks mix 1U pizza boxes (web servers, edge nodes), 2U servers (storage, GPU hosts), and the occasional 4U beast for AI workloads.'
@@ -2680,7 +2797,7 @@ const COMPONENT_INFO = {
     lead: 'Where the building\'s structured cabling meets the rack.',
     body: [
       'Every Ethernet drop in the building terminates on the back of a patch panel. The front exposes a clean row of RJ-45 ports labeled with the room and jack number.',
-      'From the patch panel, short patch cables jump to the network switch — keeping every long cable run permanent and untouched. Move a desk? Re-patch a single short cable, not a 90-meter run through the ceiling.'
+      'From the patch panel, short patch cables jump to the network switch, keeping every long cable run permanent and untouched. Move a desk? Re-patch a single short cable, not a 90-meter run through the ceiling.'
     ],
     spec: 'Typical · 24 or 48 port · Cat6A · 1U'
   },
@@ -2689,7 +2806,7 @@ const COMPONENT_INFO = {
     lead: 'The single point of entry for every server in the rack.',
     body: [
       'Every server in the rack connects up to one (or two, for redundancy) top-of-rack switches. The switch itself uplinks to the core switch over a high-speed fiber trunk.',
-      'This "leaf-and-spine" pattern means the switch only has to forward inside the rack at full speed — and any server can reach any other server with at most three hops.'
+      'This "leaf-and-spine" pattern means the switch only has to forward inside the rack at full speed, and any server can reach any other server with at most three hops.'
     ],
     spec: 'Typical · 48× 25 GbE + 8× 100 GbE uplinks · 1U'
   },
@@ -2697,7 +2814,7 @@ const COMPONENT_INFO = {
     eyebrow: 'Power', title: 'UPS Battery Backup',
     lead: 'When the lights go out, the workload keeps running.',
     body: [
-      'A rack UPS is a battery the size of a small refrigerator. When utility power drops, it takes over within milliseconds — fast enough that not a single server even notices.',
+      'A rack UPS is a battery the size of a small refrigerator. When utility power drops, it takes over within milliseconds, fast enough that not a single server even notices.',
       'Most UPS units carry the load for 5–15 minutes. That window is enough for the diesel generator outside the building to spin up and assume the load until utility power returns.'
     ],
     spec: 'Typical · 6 kVA double-conversion online · 2U'
@@ -2706,8 +2823,8 @@ const COMPONENT_INFO = {
     eyebrow: 'Order', title: 'Cable Management',
     lead: 'The difference between a maintainable rack and a future fire.',
     body: [
-      'Horizontal cable bars, vertical raceways, velcro ties (never zip ties — they trap heat and pinch fiber), and rigorous color coding make a 42U rack maintainable for the next decade.',
-      'Bad cable management blocks airflow, makes hardware swaps a 4-hour ordeal, and turns a small fault into a domino-effect outage. Good cable management is invisible — and that is exactly the point.'
+      'Horizontal cable bars, vertical raceways, velcro ties (never zip ties, they trap heat and pinch fiber), and rigorous color coding make a 42U rack maintainable for the next decade.',
+      'Bad cable management blocks airflow, makes hardware swaps a 4-hour ordeal, and turns a small fault into a domino-effect outage. Good cable management is invisible, and that is exactly the point.'
     ],
     spec: 'Standard · color-coded fiber + copper · velcro only'
   }
