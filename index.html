@@ -1188,6 +1188,224 @@ footer p.title {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   STICKY CHAPTER NAV — appears once you scroll past the hero
+   ───────────────────────────────────────────────────────────── */
+.chapter-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 360ms var(--easing), opacity 360ms var(--easing);
+}
+.chapter-nav.show { transform: none; opacity: 1; }
+.chapter-nav .brand {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.224px;
+  color: var(--ink);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.chapter-nav .brand:hover { text-decoration: none; color: var(--primary); }
+.chapter-nav ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-end;
+}
+.chapter-nav a.link {
+  display: inline-block;
+  font-family: var(--font-text);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.12px;
+  color: var(--ink-muted-48);
+  padding: 6px 10px;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: color 200ms var(--easing), background 200ms var(--easing);
+}
+.chapter-nav a.link:hover { color: var(--ink); background: rgba(0, 0, 0, 0.04); text-decoration: none; }
+.chapter-nav a.link.current { color: var(--primary); background: rgba(0, 102, 204, 0.10); }
+@media (max-width: 1100px) {
+  .chapter-nav a[data-tier="2"] { display: none; }
+}
+@media (max-width: 900px) {
+  .chapter-nav { padding: 10px 16px; gap: 8px; }
+  .chapter-nav .brand { font-size: 13px; }
+  .chapter-nav ol { gap: 2px; }
+  .chapter-nav a.link { font-size: 11px; padding: 4px 7px; }
+  .chapter-nav a[data-tier="1"] { display: none; }
+}
+@media (max-width: 600px) {
+  .chapter-nav .brand { font-size: 12px; }
+  .chapter-nav a.link { font-size: 10.5px; padding: 4px 6px; }
+}
+
+/* Back-to-top — small floating pill */
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 95;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: rgba(29, 29, 31, 0.85);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 320ms var(--easing), transform 320ms var(--easing), background 200ms var(--easing);
+}
+.back-to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+.back-to-top:hover { background: var(--ink); }
+.back-to-top:active { transform: scale(0.94); }
+.back-to-top svg { width: 18px; height: 18px; display: block; }
+
+/* ─────────────────────────────────────────────────────────────
+   LEARNING GOALS — small framed list under the hero
+   ───────────────────────────────────────────────────────────── */
+.learning-goals {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 32px 36px;
+  background: var(--pearl);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+}
+.learning-goals h2 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.231px;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.learning-goals ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  counter-reset: lg;
+}
+@media (max-width: 720px) { .learning-goals ol { grid-template-columns: 1fr; } }
+.learning-goals li {
+  counter-increment: lg;
+  position: relative;
+  padding-left: 32px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.224px;
+  color: var(--ink-muted-80);
+}
+.learning-goals li::before {
+  content: counter(lg, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.224px;
+  color: var(--primary);
+  font-feature-settings: "tnum";
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CHAPTER TAKEAWAY — one-sentence "in plain English" closer
+   ───────────────────────────────────────────────────────────── */
+.takeaway {
+  margin-top: 56px;
+  padding: 20px 24px 20px 28px;
+  border-left: 3px solid var(--primary);
+  background: rgba(0, 102, 204, 0.04);
+  border-radius: 0 12px 12px 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  max-width: 760px;
+}
+.takeaway .label {
+  display: block;
+  font-family: var(--font-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.section.dark .takeaway,
+.section.dark-2 .takeaway,
+.section.dark-3 .takeaway {
+  background: rgba(41, 151, 255, 0.08);
+  border-left-color: var(--primary-on-dark);
+  color: var(--body-on-dark);
+}
+.section.dark .takeaway .label,
+.section.dark-2 .takeaway .label,
+.section.dark-3 .takeaway .label { color: var(--primary-on-dark); }
+
+/* ─────────────────────────────────────────────────────────────
+   FIGURE CAPTION — tiny label under each numbered diagram/embed
+   ───────────────────────────────────────────────────────────── */
+.figure-caption {
+  margin-top: 14px;
+  font-family: var(--font-text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: -0.224px;
+  color: var(--ink-muted-48);
+  max-width: 720px;
+}
+.figure-caption strong {
+  color: var(--primary);
+  font-weight: 600;
+  margin-right: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.section.dark .figure-caption,
+.section.dark-2 .figure-caption,
+.section.dark-3 .figure-caption { color: var(--body-muted); }
+.section.dark .figure-caption strong,
+.section.dark-2 .figure-caption strong,
+.section.dark-3 .figure-caption strong { color: var(--primary-on-dark); }
+
+/* ─────────────────────────────────────────────────────────────
    REDUCED MOTION
    ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -1199,18 +1417,72 @@ footer p.title {
   .reveal { opacity: 1; transform: none; }
   .flow-line { stroke-dashoffset: 0 !important; }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   PRINT — turn the page into a clean research artifact
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #fff; color: #000; }
+  .skip-link, .chapter-nav, .back-to-top, .scroll-indicator,
+  .iq-nav, .iq-dots, .iq-counter, .info-scrim, .info-card, .tooltip,
+  .mobile-callouts, .callout { display: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .section { padding: 24px 0; page-break-inside: avoid; background: #fff !important; color: #000 !important; }
+  .section.dark, .section.dark-2, .section.dark-3, .section.parchment { background: #fff !important; color: #000 !important; }
+  .section.dark *, .section.dark-2 *, .section.dark-3 * { color: #000 !important; }
+  .lead, .body-text, p { color: #000 !important; }
+  .eyebrow { color: #555 !important; }
+  .flow-line { stroke-dashoffset: 0 !important; stroke: #000 !important; }
+  .model-stage iframe { display: none; }
+  .model-stage::after {
+    content: "[3D model omitted in print. Visit the live page to interact.]";
+    display: block;
+    padding: 24px;
+    text-align: center;
+    color: #555;
+    font-style: italic;
+    border: 1px dashed #999;
+  }
+  .iq-track { display: block !important; transform: none !important; }
+  .iq-card { display: block !important; page-break-inside: avoid; padding: 16px 0; border-bottom: 1px solid #ddd; }
+  .iq-card[aria-hidden="true"] { display: block !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 10px; color: #555; word-break: break-all; }
+  .cite { background: transparent !important; color: #000 !important; padding: 0 !important; }
+  .cite::before { content: "["; }
+  .cite::after { content: "]"; }
+  h1, h2, h3, h4 { page-break-after: avoid; }
+  .figure-caption { page-break-before: avoid; }
+}
 </style>
 </head>
 <body>
 
 <a href="#device" class="skip-link">Skip to content</a>
 
+<!-- Sticky chapter nav — appears once you scroll past the hero -->
+<nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
+  <a href="#top" class="brand">How the World Stays Connected</a>
+  <ol>
+    <li><a class="link" href="#device" data-tier="0">01 · Device</a></li>
+    <li><a class="link" href="#lan" data-tier="1">02 · LAN</a></li>
+    <li><a class="link" href="#server" data-tier="2">03 · Server</a></li>
+    <li><a class="link" href="#rack" data-tier="2">04 · Rack</a></li>
+    <li><a class="link" href="#datacenter" data-tier="1">05 · Data Center</a></li>
+    <li><a class="link" href="#systems" data-tier="2">06 · Systems</a></li>
+    <li><a class="link" href="#interview" data-tier="0">Interview</a></li>
+    <li><a class="link" href="#cloud" data-tier="1">07 · Cloud</a></li>
+    <li><a class="link" href="#cost" data-tier="2">08 · Cost</a></li>
+    <li><a class="link" href="#sources" data-tier="0">Sources</a></li>
+  </ol>
+</nav>
+
 <main id="main">
 
 <!-- ═══════════════════════════════════════════════════════════
      SECTION 1 — HERO
 ═════════════════════════════════════════════════════════════ -->
-<section class="hero" aria-labelledby="heroTitle">
+<section class="hero" id="top" aria-labelledby="heroTitle">
   <h1 id="heroTitle" class="hero-display reveal d1">Your Wi-Fi works because<br>somebody paid for boring.</h1>
   <p class="tagline reveal d2">The internet isn't magic. It's infrastructure.</p>
   <p class="subhead reveal d3">I used to think the internet was magic. Then I learned it's boxes, cables, and people pretending they're calm during outages. This is how a single laptop becomes the internet, one chapter at a time.</p>
@@ -1220,6 +1492,23 @@ footer p.title {
   </div>
 </section>
 <hr class="hairline">
+
+<!-- Learning goals — what you'll be able to explain after reading -->
+<section class="section" id="goals" aria-labelledby="goalsTitle" style="padding-top:80px; padding-bottom:0">
+  <div class="learning-goals reveal d1">
+    <h2 id="goalsTitle">By the time you scroll to the bottom, you'll be able to explain:</h2>
+    <ol>
+      <li>How a single device gets an identity on a network (NIC, MAC, IP, and which OSI layer each one lives on).</li>
+      <li>How a local network actually moves a packet from a printer to a laptop two floors up.</li>
+      <li>What's inside a server, why every part has a backup, and why a $40,000 box is cheaper than its own software license.</li>
+      <li>What a rack and a data center spend their power on, and why cooling costs more than compute.</li>
+      <li>How enterprise software (Active Directory, SQL Server, virtualization, firewalls) turns hardware into rules.</li>
+      <li>Why nobody really runs "all cloud" or "all on-prem" — and what hybrid actually looks like in a diagram.</li>
+      <li>How a 280-store franchise keeps the registers running when the internet drops, told in the IT specialist's own words.</li>
+      <li>Where the real money goes, why licensing is the hidden tax, and how cloud waste reaches $44.5 billion a year.</li>
+    </ol>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════════════════
      SECTION 2 — THE SINGLE DEVICE
@@ -1280,7 +1569,7 @@ footer p.title {
             </g>
           </svg>
         </div>
-        <p class="caption reveal d3" style="margin-top:12px">Hover any node for details.</p>
+        <p class="figure-caption reveal d3" style="margin-top:14px"><strong>Figure 1</strong>One device gets three IDs: NIC (the hardware), MAC (a permanent name), and IP (a current address). Each lives on a different layer of the OSI model. Hover any node for details.</p>
       </div>
 
       <div class="reveal d3">
@@ -1300,6 +1589,11 @@ footer p.title {
         </div>
       </div>
     </div>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      Three IDs, three layers. The NIC is the body, the MAC is the name on the door, the IP is the street address. You need all three to send mail to a single computer.
+    </p>
   </div>
 </section>
 
@@ -1388,8 +1682,9 @@ footer p.title {
 
         <!-- Subnet labels -->
         <text x="60" y="200" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" font-weight="600" letter-spacing="0.1em">SUBNET 192.168.1.0/24</text>
-        <text x="700" y="200" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" font-weight="600" letter-spacing="0.1em">CCTV — 10.10.20.0/24</text>
+        <text x="700" y="200" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" font-weight="600" letter-spacing="0.1em">CCTV · 10.10.20.0/24</text>
       </svg>
+      <p class="figure-caption reveal d4" style="margin-top:14px"><strong>Figure 2</strong>A typical office LAN. Endpoints (workstations, phones, APs, printers, cameras) connect to a Layer 2 switch, which feeds a Layer 3 router that talks to the WAN.</p>
     </div>
 
     <div class="two-col" style="margin-top:48px">
@@ -1418,6 +1713,11 @@ footer p.title {
         </div>
       </div>
     </div>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      Switches keep a list of who lives where on the floor. Routers keep a map of how to leave the building. Together they finish a coast-to-coast trip in milliseconds.
+    </p>
   </div>
 </section>
 
@@ -1448,6 +1748,7 @@ footer p.title {
       <button type="button" class="callout left"  style="top:42%; right:6%" data-info="storage" aria-label="Storage details">Storage</button>
       <button type="button" class="callout left"  style="top:74%; right:6%" data-info="psu" aria-label="PSU details">PSU ×2</button>
     </div>
+    <p class="figure-caption reveal d3"><strong>Figure 3</strong>An exploded view of a rack-mount server. Tap any callout (CPU, RAM, Motherboard, BMC, NIC, Storage, PSU) to read what each component does.</p>
 
     <div class="mobile-callouts">
       <button type="button" data-info="cpu">CPU</button>
@@ -1458,6 +1759,11 @@ footer p.title {
       <button type="button" data-info="motherboard">Motherboard</button>
       <button type="button" data-info="bmc">BMC</button>
     </div>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      A server is a computer that's been told it isn't allowed to fail. Two power supplies, ECC memory, hot-swap drives, redundant NICs. The "extras" aren't extras. They're the whole point.
+    </p>
   </div>
 </section>
 
@@ -1486,6 +1792,7 @@ footer p.title {
       <button type="button" class="callout left"  style="top:24%; right:6%" data-info="rack-switch" aria-label="Network Switch details">Network Switch</button>
       <button type="button" class="callout left"  style="top:62%; right:6%" data-info="cable-mgmt" aria-label="Cable Management details">Cable Management</button>
     </div>
+    <p class="figure-caption reveal d3"><strong>Figure 4</strong>An enterprise server rack. Compute, network gear, patch panels, UPS, and cable management all share the same 42U cabinet.</p>
 
     <div class="mobile-callouts">
       <button type="button" data-info="rack-1u">1U Servers</button>
@@ -1494,6 +1801,11 @@ footer p.title {
       <button type="button" data-info="ups">UPS</button>
       <button type="button" data-info="cable-mgmt">Cable Management</button>
     </div>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      A rack is a steel cabinet that organizes 42 computers, the wires between them, and a battery big enough to keep them all running until the generator wakes up.
+    </p>
   </div>
 </section>
 
@@ -1522,7 +1834,8 @@ footer p.title {
       webkitallowfullscreen="true"></iframe>
   </div>
 
-  <div class="container wide" style="margin-top:80px">
+  <div class="container wide" style="margin-top:24px">
+    <p class="figure-caption reveal d3" style="margin-top:0; margin-bottom:48px"><strong>Figure 5</strong>An immersive walk-through of a hyperscale data center. Use mouse or touch to look around the facility floor.</p>
     <div class="two-col">
       <div class="reveal d2">
         <h3 class="display-md">What keeps it running.</h3>
@@ -1560,6 +1873,11 @@ footer p.title {
         <div class="lbl">Multiple ISPs, diverse fiber, redundant everything.</div>
       </div>
     </div>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      A data center is a warehouse where almost half the electricity bill goes to keeping the computers cold, and the most expensive failure is the one nobody planned for.
+    </p>
   </div>
 </section>
 
@@ -1655,6 +1973,7 @@ footer p.title {
 
         <text x="1110" y="350" font-family="SF Pro Text, Inter, sans-serif" font-size="11" fill="#7a7a7a" text-anchor="middle" font-weight="600" letter-spacing="0.1em">SERVER FARM</text>
       </svg>
+      <p class="figure-caption reveal d4" style="margin-top:14px"><strong>Figure 6</strong>The enterprise software stack. The internet enters through the firewall, gets routed by a core switch into VLANs (IT, Finance, HR, Guest), and each VLAN can reach a server farm running AD, SQL, file, and web services.</p>
     </div>
 
     <div class="stats-row" style="margin-top:64px">
@@ -1672,7 +1991,7 @@ footer p.title {
       </div>
     </div>
 
-    <!-- Network switch — the actual hardware that makes all the lines on the diagram real -->
+    <!-- Figure 7 — the physical switch that all the diagram lines actually go through -->
     <p class="caption reveal d2" style="margin-top:80px">A real one. Drag to spin it.</p>
     <div class="model-stage reveal d3" data-h="600" style="margin-top:16px">
       <iframe
@@ -1684,6 +2003,12 @@ footer p.title {
         mozallowfullscreen="true"
         webkitallowfullscreen="true"></iframe>
     </div>
+    <p class="figure-caption reveal d4"><strong>Figure 7</strong>An enterprise network switch. The cables you see in the rack diagram all terminate in a port on a box like this.</p>
+
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      Software is the part that decides who you are, what you can do, and what you're allowed to remember. Hardware is just the place where the rules execute.
+    </p>
   </div>
 </section>
 
@@ -1930,7 +2255,7 @@ footer p.title {
           <ellipse cx="510" cy="166" rx="50" ry="24" fill="#e0e0e0"/>
           <text x="510" y="170" font-family="SF Pro Display, Inter, sans-serif" font-size="13" fill="#1d1d1f" text-anchor="middle" font-weight="600">Internet</text>
         </svg>
-        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">On-Premise.</strong> Everything in one place. You buy it, you fix it, you depreciate it over five years. The internet is the thin line at the edge: useful, but not load-bearing.</p>
+        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">Figure 8 · On-Premise.</strong> Everything in one place. You buy it, you fix it, you depreciate it over five years. The internet is the thin line at the edge: useful, but not load-bearing.</p>
       </div>
 
       <!-- HYBRID DIAGRAM -->
@@ -1970,7 +2295,7 @@ footer p.title {
           <path d="M230 165 Q320 78 410 95" fill="none" stroke="#0066cc" stroke-width="1" stroke-dasharray="2 4"/>
           <text x="320" y="68" font-family="SF Pro Text, Inter, sans-serif" font-size="10" fill="#0066cc" text-anchor="middle" letter-spacing="0.06em">Identity sync · AD ↔ Azure AD</text>
         </svg>
-        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">Hybrid.</strong> Production stays on-prem because that's where the data is. Backup, DR, and the random month-end spike all go to the cloud. Identity is the glue: one login, both worlds.</p>
+        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">Figure 9 · Hybrid.</strong> Production stays on-prem because that's where the data is. Backup, DR, and the random month-end spike all go to the cloud. Identity is the glue: one login, both worlds.</p>
       </div>
 
       <!-- CLOUD-NATIVE DIAGRAM -->
@@ -2014,7 +2339,7 @@ footer p.title {
           <path class="flow-line" d="M300 220 L300 264"/>
           <path class="flow-line" d="M480 220 L480 264"/>
         </svg>
-        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">Cloud-Native.</strong> No building, no rack, no cables you can touch. Workloads live across multiple regions, edge nodes serve anyone within a few milliseconds, and you pay per second instead of per server.</p>
+        <p class="cloud-diagram-caption"><strong style="color:var(--ink)">Figure 10 · Cloud-Native.</strong> No building, no rack, no cables you can touch. Workloads live across multiple regions, edge nodes serve anyone within a few milliseconds, and you pay per second instead of per server.</p>
       </div>
     </div>
 
@@ -2071,7 +2396,12 @@ footer p.title {
         </g>
       </svg>
     </div>
+    <p class="figure-caption reveal d4"><strong>Figure 11</strong>Multi-cloud reality. Most enterprises end up with workloads spread across AWS, Azure, and GCP, plus on-prem and SaaS, glued by identity.</p>
 
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      Real companies aren't "cloud" or "on-prem." They're both, mostly out of necessity. Production stays close to home. Backup goes to the cloud. Identity decides who you are everywhere.
+    </p>
   </div>
 </section>
 
@@ -2097,6 +2427,7 @@ footer p.title {
         mozallowfullscreen="true"
         webkitallowfullscreen="true"></iframe>
     </div>
+    <p class="figure-caption reveal d4"><strong>Figure 12</strong>A full rack with the operator's console. The actual cost of "IT" is mostly invisible: licenses, salaries, support contracts, and electricity for what you see here.</p>
 
     <div class="counter-grid" style="margin-top:80px">
       <div class="counter reveal d2">
@@ -2153,6 +2484,10 @@ footer p.title {
       </div>
     </div>
 
+    <p class="takeaway reveal d4">
+      <span class="label">In plain English</span>
+      The hardware is a one-time bill. The software, the licenses, the seats, the engineers, and the cloud waste are forever bills. Most of "IT cost" isn't IT. It's everything attached to it.
+    </p>
   </div>
 </section>
 
@@ -2242,6 +2577,11 @@ footer p.title {
   <p>A Gifted Research Project by Arriq Al-Raee</p>
   <p style="margin-top:24px">Built with vanilla HTML, CSS &amp; JavaScript · 3D models via Sketchfab · Type Inter (SF Pro substitute)</p>
 </footer>
+
+<!-- Back-to-top button -->
+<button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 14 L12 8 L18 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
 
 <!-- ═══════════════════════════════════════════════════════════
      SHARED UI ELEMENTS
@@ -2523,6 +2863,46 @@ document.querySelectorAll('[data-info]').forEach(btn => {
 infoClose.addEventListener('click', closeInfo);
 infoScrim.addEventListener('click', closeInfo);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInfo(); });
+
+/* ─────────────────────────────────────────────────────────────
+   STICKY CHAPTER NAV + BACK-TO-TOP
+   ───────────────────────────────────────────────────────────── */
+(function initChapterNav() {
+  const nav = document.getElementById('chapterNav');
+  const back = document.getElementById('backToTop');
+  if (!nav) return;
+  const links = Array.from(nav.querySelectorAll('a.link'));
+  const sectionIds = links.map(a => a.getAttribute('href').slice(1));
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  const hero = document.getElementById('top');
+  const heroHeight = () => (hero ? hero.offsetHeight - 80 : 600);
+
+  function updateChrome() {
+    const past = window.scrollY > heroHeight();
+    nav.classList.toggle('show', past);
+    if (back) back.classList.toggle('show', past);
+  }
+  function updateCurrent() {
+    const probe = window.scrollY + window.innerHeight * 0.30;
+    let activeIdx = -1;
+    sections.forEach((s, i) => { if (s.offsetTop <= probe) activeIdx = i; });
+    links.forEach((a, i) => a.classList.toggle('current', i === activeIdx));
+  }
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { updateChrome(); updateCurrent(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  updateChrome();
+  updateCurrent();
+
+  if (back) {
+    back.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+})();
 
 /* ─────────────────────────────────────────────────────────────
    CLOUD COMPARISON — click to highlight
