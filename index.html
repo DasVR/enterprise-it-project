@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="The internet isn't magic. It's infrastructure: boxes, cables, and people staying calm during outages. A walk from one laptop to a hyperscale data center.">
+<meta name="description" content="The internet isn't magic. It's infrastructure: boxes, cables, and people staying calm during outages. A walk from one laptop to a large-scale data center.">
 <title>How the World Stays Connected · Enterprise IT Infrastructure</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -711,6 +711,7 @@ hr.hairline { border: 0; height: 1px; background: var(--hairline); margin: 0; }
   display: block;
   opacity: 1;
   transform: none;
+  min-height: min(420px, 70vh);
 }
 .cloud-diagram svg {
   width: 100%;
@@ -1473,7 +1474,7 @@ footer p.title {
 .figure-caption strong {
   color: var(--primary);
   font-weight: 600;
-  margin-right: 6px;
+  margin-right: 0.4em;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-size: 11px;
@@ -1542,7 +1543,7 @@ footer p.title {
 
 <!-- Sticky chapter nav — appears once you scroll past the hero -->
 <nav class="chapter-nav" id="chapterNav" aria-label="Chapter navigation">
-  <a href="#top" class="brand">How the World Stays Connected</a>
+  <a href="#top" class="brand">Enterprise IT Infrastructure</a>
   <ol>
     <li><a class="link" href="#device" data-tier="0">01 · Device</a></li>
     <li><a class="link" href="#lan" data-tier="1">02 · LAN</a></li>
@@ -1584,7 +1585,7 @@ footer p.title {
       <li>What a rack and a data center spend their power on, and why cooling costs more than compute.</li>
       <li>How enterprise software (Active Directory, SQL Server, virtualization, firewalls) turns hardware into rules.</li>
       <li>Why nobody really runs "all cloud" or "all on-prem" — and what hybrid actually looks like in a diagram.</li>
-      <li>How a 280-store franchise keeps the registers running when the internet drops, told in the IT specialist's own words.</li>
+      <li>How a 280-store franchise keeps the registers running when the internet drops, told in the specialist's own words.</li>
       <li>Where the real money goes, why licensing is the hidden tax, and how cloud waste reaches $44.5 billion a year.</li>
     </ol>
   </div>
@@ -1649,7 +1650,7 @@ footer p.title {
             </g>
           </svg>
         </div>
-        <p class="figure-caption reveal d3" style="margin-top:14px"><strong>Figure 1</strong>One device gets three IDs: NIC (the hardware), MAC (a permanent name), and IP (a current address). Each lives on a different layer of the OSI model. Hover any node for details.</p>
+        <p class="figure-caption reveal d3" style="margin-top:14px"><strong>Figure 1</strong>One device gets three IDs: NIC (the hardware), MAC (the burned-in link-layer address), and IP (the logical routable address). Each maps to a different layer of the OSI model. Hover any node for details.</p>
       </div>
 
       <div class="reveal d3">
@@ -1796,7 +1797,7 @@ footer p.title {
 
     <p class="takeaway reveal d4">
       <span class="label">In plain English</span>
-      Switches keep a list of who lives where on the floor. Routers keep a map of how to leave the building. Together they finish a coast-to-coast trip in milliseconds.
+      Switches keep a list of who lives where on the floor. Routers keep a map of how to leave the building. Inside the building, frames cross switches in microseconds; crossing the public internet adds longer paths and delays.
     </p>
   </div>
 </section>
@@ -1884,7 +1885,7 @@ footer p.title {
 
     <p class="takeaway reveal d4">
       <span class="label">In plain English</span>
-      A rack is a steel cabinet that organizes 42 computers, the wires between them, and a battery big enough to keep them all running until the generator wakes up.
+      A rack is a steel cabinet measured in rack units (42U tall is standard). It holds servers, switches, patch panels, and often a UPS big enough to bridge the gap until generators spin up.
     </p>
   </div>
 </section>
@@ -1915,11 +1916,11 @@ footer p.title {
   </div>
 
   <div class="container wide" style="margin-top:24px">
-    <p class="figure-caption reveal d3" style="margin-top:0; margin-bottom:48px"><strong>Figure 5</strong>An immersive walk-through of a hyperscale data center. Use mouse or touch to look around the facility floor.</p>
+    <p class="figure-caption reveal d3" style="margin-top:0; margin-bottom:48px"><strong>Figure 5</strong>An immersive walk-through model of a large-scale data center floor. Use mouse or touch to look around.</p>
     <div class="two-col">
       <div class="reveal d2">
         <h3 class="display-md">What keeps it running.</h3>
-        <p class="body-text on-dark" style="margin-top:16px">Three invisible systems are working at all times: cooling, power, and security. Together they make the difference between five-nines uptime and a seven-figure outage.<a class="cite" href="#src-6">6</a></p>
+        <p class="body-text on-dark" style="margin-top:16px">Three invisible systems are working at all times: cooling, power, and security. Together they make the difference between five-nines uptime and an outage that shows up on an earnings call. Analysts also model outage cost in dollars per minute or per hour; published totals swing wildly by industry and company size, which is why facilities try hard never to need those spreadsheets.<a class="cite" href="#src-6">6</a></p>
       </div>
       <div class="reveal d3">
         <div class="fact-list" style="margin-top:0">
@@ -1968,7 +1969,7 @@ footer p.title {
   <div class="container wide">
     <p class="eyebrow reveal">Chapter 06</p>
     <h2 class="display-lg reveal d1" style="margin-top:12px">Enterprise Systems.</h2>
-    <p class="lead reveal d2" style="margin-top:20px">Hardware is loud. Software is louder. This is where IT stops feeling like boxes and starts feeling like rules. Active Directory decides who you are. SQL Server remembers what you did. The firewall decides what gets in.<a class="cite" href="#src-11">11</a></p>
+    <p class="lead reveal d2" style="margin-top:20px">Hardware is loud. Software is louder. This is where IT stops feeling like boxes and starts feeling like rules. Active Directory decides who you are. SQL Server remembers what you did. The firewall decides what gets in.</p>
 
     <div class="diagram-wrap reveal d3" style="margin-top:64px">
       <svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg" aria-label="Enterprise systems diagram">
@@ -2098,8 +2099,8 @@ footer p.title {
 <section class="section" id="interview" aria-labelledby="interviewTitle">
   <div class="container narrow">
     <p class="eyebrow reveal">Interview · IT Support Specialist, Pinch a Penny</p>
-    <h2 id="interviewTitle" class="display-lg reveal d1" style="margin-top:12px">In his own words.</h2>
-    <p class="lead reveal d2" style="margin-top:20px">I sat down with the IT specialist who keeps the franchise running.<a class="cite" href="#src-11">11</a> Eight things he said wouldn't leave my head: about people, hardware, the day the internet quits, and the architecture that holds 280 stores together.</p>
+    <h2 id="interviewTitle" class="display-lg reveal d1" style="margin-top:12px">In their own words.</h2>
+    <p class="lead reveal d2" style="margin-top:20px">I sat down with the IT specialist who keeps the franchise running.<a class="cite" href="#src-11">11</a> Eight things they said wouldn't leave my head: people, hardware, the day the internet quits, and the architecture that holds 280 stores together.</p>
 
     <div class="interview-carousel reveal d3"
          id="interviewCarousel"
@@ -2250,7 +2251,7 @@ footer p.title {
   <div class="container wide">
     <p class="eyebrow reveal">Chapter 07</p>
     <h2 class="display-lg reveal d1" style="margin-top:12px">Cloud & Hybrid.</h2>
-    <p class="lead reveal d2" style="margin-top:20px">Nobody gets to pick "cloud or not" like it's a personality quiz. Real companies end up hybrid because reality refuses to choose. Production stays on-prem. Backup goes to AWS. Identity lives on the domain controller. Month-end spikes burst into Azure and come back down.<a class="cite" href="#src-3">3</a></p>
+    <p class="lead reveal d2" style="margin-top:20px">Nobody gets to pick "cloud or not" like it's a personality quiz. Real companies end up hybrid because reality refuses to choose. Production stays on-prem. Backup goes to AWS. Identity lives on the domain controller. Month-end spikes burst into Azure and come back down.</p>
 
     <div class="cloud-grid reveal d3" id="cloudGrid" role="tablist" aria-label="Infrastructure model comparison">
       <button type="button" class="cloud-col" data-col="onprem" role="tab" aria-selected="false">
@@ -2516,7 +2517,7 @@ footer p.title {
       </div>
       <div class="counter reveal d2">
         <div class="num" data-counter='{"pre":"$","end":723.4,"decimals":1,"suffix":"B"}'>$0B</div>
-        <div class="lbl">Gartner's worldwide cloud spending forecast for the year.<a class="cite" href="#src-2">2</a> That's bigger than the GDP of every country except about twenty. Companies collectively spend a small economy on rented compute.</div>
+        <div class="lbl">Gartner's worldwide public-cloud spending forecast for 2025.<a class="cite" href="#src-2">2</a> That's bigger than the GDP of every country except about twenty. Companies collectively spend a small economy on rented compute.</div>
       </div>
       <div class="counter reveal d3">
         <div class="num" data-counter='{"end":35,"suffix":"%"}'>0%</div>
@@ -2582,7 +2583,7 @@ footer p.title {
 
     <div class="methodology reveal d3" aria-labelledby="methodTitle">
       <h3 id="methodTitle">How this research was gathered</h3>
-      <p>This project combined two research streams. The first was secondary research: industry reports from IDC, Gartner, Forrester, Flexera, and the Uptime Institute, plus product documentation from Microsoft and Dell. Each quantitative claim on the site links to a numbered entry below.</p>
+      <p>This project combined two research streams. The first was secondary research: industry reports from IDC, Gartner, Forrester, Flexera, and the Uptime Institute, plus vendor documentation (Microsoft licensing; IDC study sponsored by Dell Technologies). Major numeric claims on the site link to a numbered entry below.</p>
       <p>The second stream was primary research: a recorded interview with a working IT support specialist who maintains infrastructure across 280+ retail locations, plus on-site observation of one store's network closet. The interview transcript powers the entire <a href="#interview">interview carousel</a>. Names and store numbers are anonymized to protect the participant.</p>
       <p>Where a published source could not be pinned to a specific page or PDF, the figure is presented as a range or removed. Numbers presented as exact (e.g. <em>$723.4&nbsp;B</em>) link directly to the press release or report containing that exact figure.</p>
     </div>
@@ -2651,13 +2652,13 @@ footer p.title {
         <a href="https://world.hey.com/dhh/we-have-left-the-cloud-251760fb" target="_blank" rel="noopener">world.hey.com (We have left the cloud)</a>
       </li>
       <li id="src-6">
-        <strong>$5,600 per hour average enterprise downtime cost</strong>
-        Gartner, widely cited downtime benchmark, originally published in their IT operations research and regularly republished by the Uptime Institute and ITIC's annual reliability survey.
+        <strong>Framework for estimating IT downtime cost</strong>
+        Gartner's Smarter With Gartner article explains how organizations estimate the financial hit from outages. Third-party summaries sometimes cite eye-catching averages (often quoted per minute and frequently outdated within a few years). Treat any single number as illustrative unless you've modeled it for your own revenue and recovery time.
         <a href="https://www.gartner.com/smarterwithgartner/the-cost-of-downtime" target="_blank" rel="noopener">gartner.com (cost of downtime)</a>
       </li>
       <li id="src-7">
-        <strong>Five-nines uptime = 99.999% / ~5.26 minutes per year of downtime</strong>
-        Uptime Institute, <em>Tier Standard: Topology</em>. The "Tier IV" data-center classification target.
+        <strong>Five-nines availability (99.999%) and ~5.26 minutes of downtime per year</strong>
+        The ~5.26 minute figure is arithmetic from the percentage (allowed downtime per calendar year). Facility design benchmarks such as Uptime Institute Tier classifications describe fault tolerance and redundancy goals; see <em>Tier Standard: Topology</em> for how Tier IV facilities are defined.
         <a href="https://uptimeinstitute.com/tiers" target="_blank" rel="noopener">uptimeinstitute.com (Tier Standard)</a>
       </li>
       <li id="src-8">
